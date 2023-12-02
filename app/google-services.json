@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "342014982424",
+    "project_id": "medical-application-52557",
+    "storage_bucket": "medical-application-52557.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342014982424:android:546eb210cd06261328c66d",
+        "android_client_info": {
+          "package_name": "com.example.medicalapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "342014982424-4q0tck67kbb24dq24i1c54scupgandmq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtWHoi5czbJGAM4WZxMA8QRubgq__0z20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "342014982424-4q0tck67kbb24dq24i1c54scupgandmq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342014982424:android:25343a00414ebf1b28c66d",
+        "android_client_info": {
+          "package_name": "com.plcoding.composegooglesignincleanarchitecture"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "342014982424-4q0tck67kbb24dq24i1c54scupgandmq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtWHoi5czbJGAM4WZxMA8QRubgq__0z20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "342014982424-4q0tck67kbb24dq24i1c54scupgandmq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
