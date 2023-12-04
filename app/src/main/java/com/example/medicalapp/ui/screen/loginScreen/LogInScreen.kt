@@ -44,7 +44,7 @@ fun LoginScreen(
     }
     LaunchedEffect(key1 = counter)
     {
-        viewModel.login("jalal@gmail.com", "111111")
+        viewModel.login("test@gmail.com", "12345678")
     }
 
 }

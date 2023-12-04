@@ -23,7 +23,6 @@ class LoginViewModel @Inject constructor(private val loginUsecase: LoginUsecase)
     val userData = _userData.asStateFlow()
     suspend fun login(email: String, password: String) {
         val uid = loginUsecase.login(email, password)
-        delay(8000)
         Log.i("jalal", "email is $email uid is $uid")
         _userData.update {
             it.copy(
