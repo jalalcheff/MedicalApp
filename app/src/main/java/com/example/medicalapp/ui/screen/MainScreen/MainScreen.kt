@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.medicalapp.R
 import com.example.medicalapp.ui.compasible.BlackText
 import com.example.medicalapp.ui.compasible.DateRecyclerContent
@@ -29,10 +30,12 @@ import com.example.medicalapp.ui.compasible.HorizontalSpacer
 import com.example.medicalapp.ui.compasible.MainIcons
 import com.example.medicalapp.ui.compasible.PatientQueryContent
 import com.example.medicalapp.ui.compasible.VerticalSpacer
+import com.example.medicalapp.ui.screen.MainScreen.MainScreenViewModel
 
 @Composable
-fun MainScreen(){
-
+fun MainScreen(
+     viewModel: MainScreenViewModel = hiltViewModel(),
+){
 }
 
 @Composable

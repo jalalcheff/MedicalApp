@@ -1,5 +1,6 @@
 package com.example.medicalapp.ui.screen.loginScreen
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,19 +27,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import com.example.medicalapp.R
 import com.example.medicalapp.remote.RemoteDatasourceImp
 import com.example.medicalapp.repository.RemoteDatasource
 import com.example.medicalapp.ui.compasible.LoginBottomSheet
+import com.example.medicalapp.ui.screen.MainScreen.navigateToMainScreen
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
+    navController: NavController
 ){
     var counter by remember{ mutableStateOf(0) }
     Button(onClick = {
         counter++
-        viewModel.getData()
+        Log.i("jalal", "clicked me : ${viewModel.userData.value.uid}")
+        navController.navigateToMainScreen(viewModel.userData.value.uid)
     }) {
         Text(text = "click me")
     }

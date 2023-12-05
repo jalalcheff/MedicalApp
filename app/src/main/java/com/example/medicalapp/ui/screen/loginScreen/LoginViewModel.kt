@@ -37,6 +37,6 @@ class LoginViewModel @Inject constructor(private val loginUsecase: LoginUsecase)
                  TODO("show invalid message")*/
     }
     fun getData(){
-        Log.i("jalal", "${_userData.value}")
+        _userData.value.uid
     }
 }
