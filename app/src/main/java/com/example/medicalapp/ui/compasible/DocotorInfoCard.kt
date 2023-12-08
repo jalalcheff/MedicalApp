@@ -29,12 +29,22 @@ import androidx.compose.ui.unit.dp
 import com.example.medicalapp.R
 
 @Composable
-fun DoctorInfoCardScreen(){
-DoctorInfoCardContent()
+fun DoctorInfoCardScreen(
+    doctorName: String,
+    fieldName: String,
+    clincStartTime: String,
+    clincEndTime: String
+){
+DoctorInfoCardContent(doctorName, fieldName, clincStartTime, clincEndTime)
 }
 
 @Composable
-fun DoctorInfoCardContent(){
+fun DoctorInfoCardContent(
+    doctorName: String,
+    fieldName: String,
+    clincStartTime: String,
+    clincEndTime: String
+){
 Box(modifier = Modifier.fillMaxWidth()) {
     Image(
         painter = painterResource(id = R.drawable.frame_11),
@@ -49,8 +59,8 @@ Box(modifier = Modifier.fillMaxWidth()) {
     ) {
         Row() {
             Column(horizontalAlignment = Alignment.End) {
-                WhiteText(text = "د. سامي التميمي", size = 14)
-                WhiteText(text = "اختصاص جلدية", size = 12)
+                WhiteText(text = doctorName, size = 14)
+                WhiteText(text = fieldName, size = 12)
             }
             HorizontalSpacer(space = 12)
             Image(
@@ -72,7 +82,7 @@ Box(modifier = Modifier.fillMaxWidth()) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                DateTimeDoctor(imageUrl = R.drawable.clock_nine_svgrepo_com, text = "22:00 - 9:00")
+                DateTimeDoctor(imageUrl = R.drawable.clock_nine_svgrepo_com, text = "$clincStartTime - $clincEndTime")
                 DateTimeDoctor(imageUrl = R.drawable.calendar, text = "الاربعاء, 13 ايلول")
             }
         }
@@ -83,5 +93,5 @@ Box(modifier = Modifier.fillMaxWidth()) {
 @Composable
 @Preview
 fun PreviewDoctorInfoScreen(){
-    DoctorInfoCardContent()
+    DoctorInfoCardContent("","","","")
 }

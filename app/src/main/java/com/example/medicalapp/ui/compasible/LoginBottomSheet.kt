@@ -30,6 +30,7 @@ import com.example.medicalapp.R
 import com.example.medicalapp.remote.RemoteDatasourceImp
 import com.example.medicalapp.repository.RemoteDatasource
 import com.example.medicalapp.ui.screen.loginScreen.ILogin
+import com.example.medicalapp.ui.screen.loginScreen.LoginUiState
 import com.example.medicalapplication.ui.theme.expoArabic
 
 @Composable
@@ -39,15 +40,17 @@ fun LoginBottomSheet(
         .background(Color.White)
         .fillMaxHeight()
         .padding(horizontal = 16.dp),
-    login: RemoteDatasource,
+    usernameArg: String,
+    passwordArg: String,
+    onClickLogin: (String, String) -> Unit
 ) {
     Column(
         modifier = modifier
     )
     {
         var buttonClick by remember { mutableStateOf(0) }
-        var email by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
+        var email by remember { mutableStateOf(usernameArg) }
+        var password by remember { mutableStateOf(passwordArg) }
         VerticalSpacer(space = 32)
         Text(
             text = "اهلا بك ! الرجاء ادخال البريد الالكتروني وكلمة المرور الخاصة بك لتسجيل الدخول",
@@ -107,8 +110,7 @@ fun LoginBottomSheet(
         VerticalSpacer(space = 48)
         Button(
             onClick = {
-                Log.i("jalal", "email is : $email , password is : $password")
-                buttonClick++
+               onClickLogin(email, password)
             },
             colors = ButtonDefaults.buttonColors(Color(0xFF18A0FB)),
             modifier = Modifier
@@ -131,5 +133,4 @@ fun LoginBottomSheet(
 @Composable
 @Preview(heightDp = 800, widthDp = 360)
 fun PreviewLoginBottomSheet() {
-    LoginBottomSheet(Modifier, RemoteDatasourceImp())
 }

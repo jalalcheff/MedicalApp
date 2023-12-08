@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,16 +32,19 @@ import com.example.medicalapp.ui.compasible.HorizontalSpacer
 import com.example.medicalapp.ui.compasible.MainIcons
 import com.example.medicalapp.ui.compasible.PatientQueryContent
 import com.example.medicalapp.ui.compasible.VerticalSpacer
+import com.example.medicalapp.ui.screen.MainScreen.MainScreenUiState
 import com.example.medicalapp.ui.screen.MainScreen.MainScreenViewModel
 
 @Composable
 fun MainScreen(
      viewModel: MainScreenViewModel = hiltViewModel(),
 ){
+    val state by viewModel.mainScreenData.collectAsState()
+    MainContent(state)
 }
 
 @Composable
-fun MainContent(){
+fun MainContent(state: MainScreenUiState){
     Column(
         modifier = Modifier
             .background(color = Color(0xFFF9F9F9))
@@ -58,7 +63,7 @@ fun MainContent(){
             Image(painter = painterResource(id = R.drawable.group_3), contentDescription = "logo")
         }
         VerticalSpacer(space = 24)
-        DoctorInfoCardContent()
+        DoctorInfoCardContent(state.doctorName, state.docotorField, state.clincStartTime, state.clincEndTime)
         VerticalSpacer(space = 24)
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -103,5 +108,5 @@ fun MainContent(){
 @Composable
 @Preview(widthDp = 360, heightDp = 800)
 fun PreviewMainScreen(){
-    MainContent()
+    MainContent(MainScreenUiState())
 }

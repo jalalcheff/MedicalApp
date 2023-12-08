@@ -13,15 +13,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,35 +36,43 @@ import com.example.medicalapp.remote.RemoteDatasourceImp
 import com.example.medicalapp.repository.RemoteDatasource
 import com.example.medicalapp.ui.compasible.LoginBottomSheet
 import com.example.medicalapp.ui.screen.MainScreen.navigateToMainScreen
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
-    navController: NavController
-){
-    var counter by remember{ mutableStateOf(0) }
-    Button(onClick = {
-        counter++
-        Log.i("jalal", "clicked me : ${viewModel.userData.value.uid}")
-        navController.navigateToMainScreen(viewModel.userData.value.uid)
-    }) {
-        Text(text = "click me")
-    }
-    LaunchedEffect(key1 = counter)
-    {
-        viewModel.login("test@gmail.com", "12345678")
-    }
+    navController: NavController,
+) {
+    val state by viewModel.userData.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
+    LoginContent(
+        state = state,
+        onClickLogin = { email, password ->
+            coroutineScope.launch {
+                viewModel.login(email = email, password = password)
+                navController.navigateToMainScreen(viewModel.userData.value.uid)
+            }
+        }
+
+    )
 
 }
+
 @Composable
-fun LoginContent(login: RemoteDatasource){
+fun LoginContent(
+    state: LoginUiState,
+    onClickLogin: (String, String) -> Unit,
+) {
     Column() {
         Box() {
             Image(
                 painter = painterResource(id = R.drawable.medical_banner),
                 contentDescription = "login_background",
             )
-            Box(modifier = Modifier.offset(y = LocalConfiguration.current.screenHeightDp.dp/3.toInt()))
+            Box(modifier = Modifier.offset(y = LocalConfiguration.current.screenHeightDp.dp / 3.toInt()))
             {
                 LoginBottomSheet(
                     Modifier
@@ -69,13 +80,16 @@ fun LoginContent(login: RemoteDatasource){
                         .background(Color.White)
                         .padding(horizontal = 16.dp)
                         .fillMaxHeight(),
-                    login = login
+                    state.username,
+                    state.password,
+                    onClickLogin
                 )
             }
         }
     }
 }
+
 @Preview(heightDp = 800, widthDp = 360)
 @Composable
-fun PreviewLogin(){
+fun PreviewLogin() {
 }

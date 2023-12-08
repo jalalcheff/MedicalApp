@@ -1,6 +1,7 @@
 package com.example.medicalapp.remote
 
 import android.util.Log
+import com.example.medicalapp.remote.resource.clincResource.ClincDetails
 import com.example.medicalapp.repository.RemoteDatasource
 import com.example.medicalapp.ui.screen.loginScreen.ILogin
 import com.example.medicalapplication.domain.NetworkException
@@ -9,6 +10,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
@@ -24,22 +26,29 @@ class RemoteDatasourceImp() : RemoteDatasource {
              else
                  type = it.exception?.message.toString()
         }.await()
-        Log.i("jalalcheff", "** uid is : $type")
         return type
-
-        /*   auth.signInWithEmailAndPassword(email ?: "", password ?: "").addOnCompleteListener {
-               if (it.isSuccessful) {
-                   type =  FirebaseAuth.getInstance().currentUser?.uid ?: ""
-
-               }
-               else
-               {
-                   Log.i("jalalcheff", "** ${it.exception?.message.toString()} ** uid is : $type")
-                   type = it.exception?.message.toString()
-               }
-
-           }*/
     }
+
+    override suspend fun getClincDetails(clincUid: String): ClincDetails {
+        val db = Firebase.firestore
+        db.collection("clinc").
+        document(clincUid).
+        collection("clincDetails").
+        get().addOnSuccessListener { result ->
+            for (document in result){
+                val data = document.data
+                RemoteUils.doctorName = data[RemoteUils.DOCTOR_NAME_KEY].toString()
+                RemoteUils.fieldName = data[RemoteUils.FIELD_NAME_KEY].toString()
+                RemoteUils.clincStartTime = data[RemoteUils.CLINC_START_TIME_KEY].toString()
+                RemoteUils.clincEndTime = data[RemoteUils.CLINC_END_TIME_KEY].toString()
+                Log.i("jalalDoc", "my data is ${document.data}")
+            }
+        }.addOnFailureListener { exception->
+            Log.i("jalalDoc", "${exception.message}")
+        }.await()
+        return ClincDetails(RemoteUils.doctorName,RemoteUils.fieldName,RemoteUils.clincStartTime,RemoteUils.clincEndTime)
+    }
+
     private suspend fun <T> tryToExecute(func: suspend () -> Task<AuthResult>): String {
         val response = func()
        // Log.d("TAG", "tryToExecute: ${response.code()}")
