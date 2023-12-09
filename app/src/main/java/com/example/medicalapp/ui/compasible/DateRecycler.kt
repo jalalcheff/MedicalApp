@@ -16,14 +16,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DateRecyclerScreen(){
-
+fun DateRecyclerScreen(
+    day: String,
+    date: String
+){
+    DateRecyclerContent(day,date)
 }
 
 @Composable
-fun DateRecyclerContent(){
+fun DateRecyclerContent(day: String, date: String){
     Card(
-        modifier = Modifier.size(60.dp).padding(end = 8.dp),
+        modifier = Modifier
+            .size(60.dp)
+            .padding(end = 8.dp),
         colors = CardDefaults.cardColors(Color(0xFF18A0FB)),
         ) {
         Column(
@@ -31,8 +36,8 @@ fun DateRecyclerContent(){
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
             ) {
-            WhiteText(text = "الاربعاء", 12)
-            WhiteText(text = "13", size = 12)
+            WhiteText(text = day, 12)
+            WhiteText(text = date, size = 12)
         }
     }
 }
@@ -40,5 +45,5 @@ fun DateRecyclerContent(){
 @Composable
 @Preview(widthDp = 360, heightDp = 800)
 fun PreviewDateRecycler(){
-    DateRecyclerContent()
+    DateRecyclerContent( "الاربعاء","13")
 }

@@ -4,5 +4,8 @@ data class MainScreenUiState(
     val doctorName: String = "" ,
     val docotorField: String = "",
     val clincStartTime: String = "",
-    val clincEndTime: String = ""
+    val clincEndTime: String = "",
+    val dayOfTheMonth: String = "",
+    val dayName: String = "",
+    val monthName: String = "",
 )

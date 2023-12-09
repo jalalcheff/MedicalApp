@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.medicalapp.R
 import com.example.medicalapp.ui.compasible.BlackText
 import com.example.medicalapp.ui.compasible.DateRecyclerContent
+import com.example.medicalapp.ui.compasible.DateRecyclerScreen
 import com.example.medicalapp.ui.compasible.DoctorInfoCardContent
 import com.example.medicalapp.ui.compasible.DoctorInfoCardScreen
 import com.example.medicalapp.ui.compasible.HorizontalSpacer
@@ -63,7 +64,7 @@ fun MainContent(state: MainScreenUiState){
             Image(painter = painterResource(id = R.drawable.group_3), contentDescription = "logo")
         }
         VerticalSpacer(space = 24)
-        DoctorInfoCardContent(state.doctorName, state.docotorField, state.clincStartTime, state.clincEndTime)
+        DoctorInfoCardScreen(state.doctorName, state.docotorField, state.clincStartTime, state.clincEndTime, state.dayName, state.dayOfTheMonth, state.monthName)
         VerticalSpacer(space = 24)
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -75,7 +76,7 @@ fun MainContent(state: MainScreenUiState){
                 content = {
                     items(10) {
                         for (i in 0..10) {
-                            DateRecyclerContent()
+                            DateRecyclerScreen(day = state.dayName, date = state.dayOfTheMonth)
                         }
                     }
                 },

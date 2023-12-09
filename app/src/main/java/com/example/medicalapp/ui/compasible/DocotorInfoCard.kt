@@ -33,9 +33,12 @@ fun DoctorInfoCardScreen(
     doctorName: String,
     fieldName: String,
     clincStartTime: String,
-    clincEndTime: String
+    clincEndTime: String,
+    dayName: String,
+    dayOfTheMonth: String,
+    monthName: String,
 ){
-DoctorInfoCardContent(doctorName, fieldName, clincStartTime, clincEndTime)
+DoctorInfoCardContent(doctorName, fieldName, clincStartTime, clincEndTime,dayName, dayOfTheMonth, monthName)
 }
 
 @Composable
@@ -43,7 +46,10 @@ fun DoctorInfoCardContent(
     doctorName: String,
     fieldName: String,
     clincStartTime: String,
-    clincEndTime: String
+    clincEndTime: String,
+    dayName: String,
+    dayOfTheMonth: String,
+    monthName: String,
 ){
 Box(modifier = Modifier.fillMaxWidth()) {
     Image(
@@ -83,7 +89,7 @@ Box(modifier = Modifier.fillMaxWidth()) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 DateTimeDoctor(imageUrl = R.drawable.clock_nine_svgrepo_com, text = "$clincStartTime - $clincEndTime")
-                DateTimeDoctor(imageUrl = R.drawable.calendar, text = "الاربعاء, 13 ايلول")
+                DateTimeDoctor(imageUrl = R.drawable.calendar, text = "$monthName $dayOfTheMonth, $dayName")
             }
         }
     }
@@ -93,5 +99,5 @@ Box(modifier = Modifier.fillMaxWidth()) {
 @Composable
 @Preview
 fun PreviewDoctorInfoScreen(){
-    DoctorInfoCardContent("","","","")
+    DoctorInfoCardContent("","","","","","","")
 }
