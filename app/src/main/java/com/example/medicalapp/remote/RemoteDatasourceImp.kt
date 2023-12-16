@@ -58,19 +58,16 @@ class RemoteDatasourceImp() : RemoteDatasource {
     ): List<PatientResource> {
         val patients = mutableListOf<PatientResource>()
         val db = Firebase.firestore
-        db.collection("clinc").document(uid).collection("paitentQuery").document("14 تشرين الثاني 2023").collection("patients").get()
+        db.collection("clinc").document(uid).collection("patientQuery").document("16 2023 تشرين الثاني").collection("patients").get()
             .addOnSuccessListener { result ->
                 for (document in result) {
                     val data = document.data
-                    RemoteUils.patientName = data[RemoteUils.PAITENT_NAME_KEY].toString()
-                    RemoteUils.query = data[RemoteUils.QUERY_KEY].toString().toInt()
-                    RemoteUils.reservationDate = data[RemoteUils.RESERVATION_KEY].toString()
                     patients.add(PatientResource(
-                        name = RemoteUils.patientName,
-                        query = RemoteUils.query,
-                        reservationDate = RemoteUils.reservationDate
+                        name = data[RemoteUils.PAITENT_NAME_KEY].toString(),
+                        query = data[RemoteUils.QUERY_KEY].toString().toInt(),
+                        reservationDate = data[RemoteUils.RESERVATION_KEY].toString()
                     ))
-                    Log.i("jalalDoc", "my data is ${document.data}")
+                    Log.i("jalalPati", "my data is ${document.data}")
                 }
             }.addOnFailureListener { exception ->
                 Log.i("jalalDoc", "${exception.message}")

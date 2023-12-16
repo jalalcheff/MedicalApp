@@ -8,4 +8,5 @@ data class MainScreenUiState(
     val dayOfTheMonth: String = "",
     val dayName: String = "",
     val monthName: String = "",
+    val year: String = ""
 )
