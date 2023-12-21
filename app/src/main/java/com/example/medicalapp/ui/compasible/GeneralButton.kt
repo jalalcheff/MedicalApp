@@ -13,7 +13,10 @@ import androidx.compose.ui.unit.dp
 import com.example.medicalapplication.ui.theme.expoArabic
 
 @Composable
-fun GeneralButton(text: String, onClickButton: ()-> Unit){
+fun GeneralButton(
+    text: String,
+    onClickButton: ()-> Unit
+){
     Button(
         onClick = onClickButton,
         colors = ButtonDefaults.buttonColors(Color(0xFF18A0FB)),

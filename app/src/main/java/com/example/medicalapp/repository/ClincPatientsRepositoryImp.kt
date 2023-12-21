@@ -8,4 +8,12 @@ class ClincPatientsRepositoryImp @Inject constructor(private val remoteDatasourc
     override suspend fun getPatientsRepository(uid: String, date: String): List<PatientResource> {
         return remoteDatasource.getPatientsInSepcificDate(uid, date)
     }
+
+    override suspend fun setPatientRepository(
+        uid: String,
+        date: String,
+        patientResource: PatientResource,
+    ): Boolean {
+        return remoteDatasource.addPatientInSpecificDate(uid, date, patientResource)
+    }
 }

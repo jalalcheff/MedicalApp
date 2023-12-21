@@ -4,4 +4,5 @@ import com.example.medicalapp.remote.resource.clincResource.PatientResource
 
 interface ClincPatientsRepository {
     suspend fun getPatientsRepository(uid: String, date: String): List<PatientResource>
+    suspend fun setPatientRepository(uid: String, date: String, patientResource: PatientResource): Boolean
 }

@@ -10,4 +10,5 @@ interface RemoteDatasource {
     suspend fun signIn(email: String? = "", password: String? = ""): String
     suspend fun getClincDetails(clincUid: String): ClincDetails
     suspend fun getPatientsInSepcificDate(uid: String, date: String): List<PatientResource>
+    suspend fun addPatientInSpecificDate(uid: String, date: String, patientResource: PatientResource): Boolean
 }

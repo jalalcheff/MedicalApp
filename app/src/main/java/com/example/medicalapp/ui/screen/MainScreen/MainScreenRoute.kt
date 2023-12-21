@@ -19,7 +19,7 @@ fun NavGraphBuilder.MainScreenRoute(navController: NavController) {
     composable(
         "$ROUTE/{uid}",
         arguments = listOf(navArgument("uid") { NavType.StringType })
-    ) { MainScreen() }
+    ) { MainScreen(navController) }
 
 }
 

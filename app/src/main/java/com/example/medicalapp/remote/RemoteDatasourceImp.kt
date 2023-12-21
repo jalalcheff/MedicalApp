@@ -32,6 +32,7 @@ class RemoteDatasourceImp() : RemoteDatasource {
 
     override suspend fun getClincDetails(clincUid: String): ClincDetails {
         val db = Firebase.firestore
+        val clincDetails = ClincDetails()
         db.collection("clinc").document(clincUid).collection("clincDetails").get()
             .addOnSuccessListener { result ->
                 for (document in result) {
@@ -65,7 +66,9 @@ class RemoteDatasourceImp() : RemoteDatasource {
                     patients.add(PatientResource(
                         name = data[RemoteUils.PAITENT_NAME_KEY].toString(),
                         query = data[RemoteUils.QUERY_KEY].toString().toInt(),
-                        reservationDate = data[RemoteUils.RESERVATION_KEY].toString()
+                        reservationDate = data[RemoteUils.RESERVATION_KEY].toString(),
+                        age = data[RemoteUils.AGE_KEY].toString().toInt(),
+                        reservationTime = data[RemoteUils.RESERVATION_TIME_KEY].toString()
                     ))
                     Log.i("jalalPati", "my data is ${document.data}")
                 }
@@ -73,6 +76,38 @@ class RemoteDatasourceImp() : RemoteDatasource {
                 Log.i("jalalDoc", "${exception.message}")
             }.await()
         return patients
+    }
+
+    override suspend fun addPatientInSpecificDate(
+        uid: String,
+        date: String,
+        patientResource: PatientResource,
+    ): Boolean {
+        val db = Firebase.firestore
+        val patient = hashMapOf(
+            RemoteUils.PAITENT_NAME_KEY to patientResource.name,
+            RemoteUils.QUERY_KEY to patientResource.query,
+            RemoteUils.RESERVATION_KEY to patientResource.reservationDate,
+            RemoteUils.AGE_KEY to patientResource.age,
+            RemoteUils.RESERVATION_TIME_KEY to patientResource.reservationTime
+        )
+        var isPatientAdded = false
+        db.collection("clinc")
+            .document(uid)
+            .collection("patientQuery")
+            .document(date)
+            .collection("patients")
+            .document(patientResource.name)
+            .set(patient)
+            .addOnSuccessListener {
+                Log.d("jalal", "DocumentSnapshot successfully written!")
+                isPatientAdded = true
+            }
+            .addOnFailureListener {
+                    e -> Log.w("jalal", "Error writing document", e)
+                isPatientAdded = false
+            }.await()
+        return isPatientAdded
     }
 
     private suspend fun <T> tryToExecute(func: suspend () -> Task<AuthResult>): String {

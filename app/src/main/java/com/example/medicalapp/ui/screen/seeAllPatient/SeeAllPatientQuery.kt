@@ -19,7 +19,7 @@ import com.example.medicalapp.R
 import com.example.medicalapp.ui.compasible.BlackText
 import com.example.medicalapp.ui.compasible.DateRecyclerContent
 import com.example.medicalapp.ui.compasible.MainIcons
-import com.example.medicalapp.ui.compasible.PatientQueryContent
+import com.example.medicalapp.ui.compasible.PatientQueryCard
 import com.example.medicalapp.ui.compasible.VerticalSpacer
 
 @Composable
@@ -61,7 +61,7 @@ fun SeeAllPatientQueryContent() {
                 content = {
                     items(10) {
                         for (i in 0..10) {
-                            PatientQueryContent()
+                            PatientQueryCard("",0,"")
                         }
                     }
                 },

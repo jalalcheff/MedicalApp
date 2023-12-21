@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
@@ -18,12 +17,11 @@ import androidx.compose.ui.unit.dp
 import com.example.medicalapp.R
 
 @Composable
-fun PatientQueryCardScreen(){
-
-}
-
-@Composable
-fun PatientQueryContent(){
+fun PatientQueryCard(
+    patientName: String,
+    query: Int,
+    reservationDate: String
+){
 Card(
     colors = CardDefaults.cardColors(Color(0xFFFEFEFE)),
     modifier = Modifier.padding(bottom = 12.dp)
@@ -35,8 +33,8 @@ Card(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            QueryHashtag()
-            BlackText(text = "سارة محمد احمد", size = 16)
+            QueryHashtag(query)
+            BlackText(text = patientName, size = 16)
         }
         VerticalSpacer(space = 20)
         Row(
@@ -45,7 +43,7 @@ Card(
             ) {
             Image(painter = painterResource(id = R.drawable.booking), contentDescription = "booking")
             HorizontalSpacer(space = 4)
-            BlackText(text = "الثلاثاء 12 ايلول", size = 10)
+            BlackText(text = reservationDate, size = 10)
         }
         VerticalSpacer(space = 20)
         Row(
@@ -61,5 +59,5 @@ Card(
 @Composable
 @Preview (widthDp = 360, heightDp = 800)
 fun PreviewPatientQuery(){
-    PatientQueryContent()
+    PatientQueryCard("",0,"")
 }

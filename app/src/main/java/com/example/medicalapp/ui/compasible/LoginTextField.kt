@@ -24,7 +24,8 @@ fun LoginTextFiled(
      trailingImageResource: @Composable (() -> Unit)? = null,
      value: String,
      onValueChange: (String) -> Unit,
-     leadingImageResource: @Composable (() -> Unit)? = null
+     leadingImageResource: @Composable (() -> Unit)? = null,
+     textAlign: TextAlign = TextAlign.Start
 ){
     OutlinedTextField(
         value = value,
@@ -43,10 +44,9 @@ fun LoginTextFiled(
                     .alpha(0.5f))
         },
         onValueChange = onValueChange,
-        textStyle = TextStyle(fontFamily = expoArabic),
+        textStyle = TextStyle(fontFamily = expoArabic, textAlign = textAlign),
         modifier = Modifier.fillMaxWidth(),
         trailingIcon = trailingImageResource,
         leadingIcon = leadingImageResource
-
         )
 }

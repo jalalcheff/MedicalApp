@@ -17,5 +17,7 @@ object RemoteUils  {
     const val PAITENT_NAME_KEY ="name"
     const val QUERY_KEY ="query"
     const val RESERVATION_KEY ="reservationDate"
+    const val AGE_KEY ="age"
+    const val RESERVATION_TIME_KEY ="reservationTime"
 
 }
