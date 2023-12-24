@@ -59,7 +59,7 @@ class RemoteDatasourceImp() : RemoteDatasource {
     ): List<PatientResource> {
         val patients = mutableListOf<PatientResource>()
         val db = Firebase.firestore
-        db.collection("clinc").document(uid).collection("patientQuery").document("16 2023 تشرين الثاني").collection("patients").get()
+        db.collection("clinc").document(uid).collection("patientQuery").document(date).collection("patients").get()
             .addOnSuccessListener { result ->
                 for (document in result) {
                     val data = document.data

@@ -3,6 +3,7 @@ package com.example.medicalapp.ui.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -105,6 +106,7 @@ fun MainContent(
         ) {
             BlackText(text = "المراجعين", size = 14)
             VerticalSpacer(space = 24)
+            Box() {
             LazyColumn(
                 content = {
                     items(patients.size) {
@@ -119,13 +121,15 @@ fun MainContent(
             FloatingActionButton(
                 onClick = onClickAddPatient,
                 containerColor = Color(0xFF18A0FB),
-                )
+                modifier = Modifier.align(alignment = Alignment.BottomEnd).padding(bottom = 16.dp)
+            )
             {
                 Image(
                     painter = painterResource(id = R.drawable.baseline_add_24),
                     contentDescription = "addPatient",
-                    colorFilter = ColorFilter.tint(Color.White)
+                    colorFilter = ColorFilter.tint(Color.White),
                     )
+            }
             }
         }
 

@@ -8,6 +8,7 @@ import com.example.medicalapp.domain.ClincDetailsUsecase
 import com.example.medicalapp.domain.CurrentDateInstance
 import com.example.medicalapp.domain.GetAllClincPatientsUsecase
 import com.example.medicalapp.domain.GetCurrentDateUsecase
+import com.example.medicalapp.domain.GetCurrentSevenDays
 import com.example.medicalapp.domain.SetPatientInSpecificDateUsecase
 import com.example.medicalapp.remote.RemoteDatasourceImp
 import com.example.medicalapp.remote.resource.clincResource.PatientResource
@@ -26,13 +27,14 @@ class MainScreenViewModel @Inject constructor(
     private val clincDetailsUsecase: ClincDetailsUsecase,
     private val getCurrentDateUsecase: GetCurrentDateUsecase,
     private val getAllClincPatientsUsecase: GetAllClincPatientsUsecase,
+    private val getCurrentSevenDays: GetCurrentSevenDays
 ) : ViewModel() {
     private val uid = MainScreenArgs(savedStateHandle).name
     private val _mainScreenData = MutableStateFlow(MainScreenUiState())
     val mainScreenData = _mainScreenData.asStateFlow()
-
     init {
         Log.i("jalal", "the passed uid is $uid")
+        Log.i("jalal", "seven days are : ${getCurrentSevenDays.getCurrentSevenDay()} and ${1 % 7}")
         viewModelScope.launch {
             fetchClincDetails(clincUid = uid.toString())
             fetchCurrentDate()
