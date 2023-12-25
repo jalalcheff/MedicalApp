@@ -18,32 +18,45 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun DateRecyclerScreen(
     day: String,
-    date: String
+    date: String,
+    isSelected: Boolean
 ){
-    DateRecyclerContent(day,date)
+    DateRecyclerContent(day,date,isSelected)
 }
 
 @Composable
-fun DateRecyclerContent(day: String, date: String){
+fun DateRecyclerContent(day: String, date: String, isSelected: Boolean){
     Card(
         modifier = Modifier
             .size(60.dp)
             .padding(end = 8.dp),
-        colors = CardDefaults.cardColors(Color(0xFF18A0FB)),
-        ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-            ) {
-            WhiteText(text = day, 12)
-            WhiteText(text = date, size = 12)
+        colors =  when(isSelected) {
+            true ->  CardDefaults.cardColors(Color(0xFF18A0FB))
+            false ->  CardDefaults.cardColors(Color(0xFFFFFFFF))
         }
-    }
-}
+    ) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    when (isSelected){
+                        true ->{
+                            WhiteText(text = day, 12)
+                            WhiteText(text = date, size = 12)
+                        }
+                        false ->{
+                            BlueText(text = day, 12)
+                            BlueText(text = date, size = 12)
+                        }
+                    }
+
+                }
+            }
+        }
 
 @Composable
 @Preview(widthDp = 360, heightDp = 800)
 fun PreviewDateRecycler(){
-    DateRecyclerContent( "الاربعاء","13")
+    DateRecyclerContent( "الاربعاء","13",true)
 }

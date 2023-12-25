@@ -1,6 +1,8 @@
 package com.example.medicalapp.ui.screen.MainScreen
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,6 +22,7 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
 
+@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 
 class MainScreenViewModel @Inject constructor(
@@ -39,24 +42,33 @@ class MainScreenViewModel @Inject constructor(
             fetchClincDetails(clincUid = uid.toString())
             fetchCurrentDate()
             fetchPatientsDetails()
+            fetchNextSevenDays()
         }
     }
 
-/*    private suspend fun setPatient() {
-        val date: String =
-            "${_mainScreenData.value.dayOfTheMonth} ${_mainScreenData.value.year} ${_mainScreenData.value.monthName}"
-        val currentTime = Calendar.getInstance().time.time
-        Log.i("jalalTime", "time is : $currentTime")
-        setPatientInSpecificDateUsecase.setPatientInSpecificDate(
-            "m5rQJcFp8KbqvQIc0OndFzmxNB72", date, PatientResource(
-                name = "محمد قاسم كاظم",
-                query = 1,
-                reservationDate = date,
-                age = 23,
-                reservationTime = "15:00"
+    private fun fetchNextSevenDays() {
+        val nextSevenDays = getCurrentSevenDays.getCurrentSevenDay()
+        _mainScreenData.update {
+            it.copy(nextSevenDays = nextSevenDays.toNextSevenDaysState())
+        }
+        Log.i("stateNextSevenDays", "next seven days : ${_mainScreenData.value.nextSevenDays}")
+    }
+
+    /*    private suspend fun setPatient() {
+            val date: String =
+                "${_mainScreenData.value.dayOfTheMonth} ${_mainScreenData.value.year} ${_mainScreenData.value.monthName}"
+            val currentTime = Calendar.getInstance().time.time
+            Log.i("jalalTime", "time is : $currentTime")
+            setPatientInSpecificDateUsecase.setPatientInSpecificDate(
+                "m5rQJcFp8KbqvQIc0OndFzmxNB72", date, PatientResource(
+                    name = "محمد قاسم كاظم",
+                    query = 1,
+                    reservationDate = date,
+                    age = 23,
+                    reservationTime = "15:00"
+                )
             )
-        )
-    }*/
+        }*/
 
     suspend fun fetchPatientsDetails(
         date: String = "${_mainScreenData.value.dayOfTheMonth} ${_mainScreenData.value.year} ${_mainScreenData.value.monthName}",

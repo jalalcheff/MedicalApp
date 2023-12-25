@@ -1,5 +1,8 @@
 package com.example.medicalapp.ui.screen
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +17,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +39,7 @@ import com.example.medicalapp.ui.screen.MainScreen.MainScreenUiState
 import com.example.medicalapp.ui.screen.MainScreen.MainScreenViewModel
 import com.example.medicalapp.ui.screen.addPatientScreen.navigateToAddPatientScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen(
     navController: NavController,
@@ -54,6 +59,7 @@ fun MainContent(
     state: MainScreenUiState,
     onClickAddPatient: () -> Unit
     ) {
+    Log.i("compasible", "days are ${state.nextSevenDays}")
     Column(
         modifier = Modifier
             .background(color = Color(0xFFF9F9F9))
@@ -87,14 +93,14 @@ fun MainContent(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.End
         ) {
+            val nextSevenDaysState =  state.nextSevenDays
             BlackText(text = "ايام تواجد الطبيب", size = 14)
             VerticalSpacer(space = 8)
+            Log.i("compasible", "days size : ${state.nextSevenDays.size}")
             LazyRow(
                 content = {
-                    items(10) {
-                        for (i in 0..10) {
-                            DateRecyclerScreen(day = state.dayName, date = state.dayOfTheMonth)
-                        }
+                    items(nextSevenDaysState.size) {
+                            DateRecyclerScreen(day = nextSevenDaysState[it].dayName, date = nextSevenDaysState[it].day, isSelected = nextSevenDaysState[it].isSelected)
                     }
                 },
             )
@@ -121,7 +127,9 @@ fun MainContent(
             FloatingActionButton(
                 onClick = onClickAddPatient,
                 containerColor = Color(0xFF18A0FB),
-                modifier = Modifier.align(alignment = Alignment.BottomEnd).padding(bottom = 16.dp)
+                modifier = Modifier
+                    .align(alignment = Alignment.BottomEnd)
+                    .padding(bottom = 16.dp)
             )
             {
                 Image(

@@ -1,5 +1,6 @@
 package com.example.medicalapp.ui.screen.MainScreen
 
+import com.example.medicalapp.domain.entity.BookingDayEntity
 import com.example.medicalapp.remote.resource.clincResource.PatientResource
 
 data class MainScreenUiState(
@@ -12,12 +13,34 @@ data class MainScreenUiState(
     val dayName: String = "",
     val monthName: String = "",
     val year: String = "",
-    val patients: List<PatientResource> = emptyList()
-)/*{
-    data class Patients(
+    val patients: List<PatientResource> = emptyList(),
+    val nextSevenDays: List<NextSevenDaysState> = emptyList()
+)
+{
+/*    data class Patients(
         val name: String = "",
         val query: Int = 0,
         val reservationDate: String = ""
     )
+    */
+    data class NextSevenDaysState(
+    val dayName: String = "",
+    val day: String = "",
+    val month: String = "",
+    val year: String = "",
+    var isSelected: Boolean = false
+    )
 }
-*/
+
+fun BookingDayEntity.toNextSevenDaysState(): MainScreenUiState.NextSevenDaysState{
+    return MainScreenUiState.NextSevenDaysState(
+        dayName = dayName,
+        day = day,
+        month = month,
+        year = year,
+        isSelected = false
+    )
+}
+fun List<BookingDayEntity>.toNextSevenDaysState(): List<MainScreenUiState.NextSevenDaysState>{
+    return this.map { it.toNextSevenDaysState() }
+}
