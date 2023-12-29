@@ -3,6 +3,7 @@ package com.example.medicalapp.di
 import com.example.medicalapp.domain.ClincPatientsRepository
 import com.example.medicalapp.domain.GetAllClincPatientsUsecase
 import com.example.medicalapp.domain.GetCurrentDateUsecase
+import com.example.medicalapp.domain.GetCurrentMonth
 import com.example.medicalapp.domain.GetDayOfTheWeekUsecase
 import com.example.medicalapp.domain.GetNextSevenDaysUsecase
 import com.example.medicalapp.repository.ClincPatientsRepositoryImp
@@ -24,4 +25,7 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideGetDayOfWeekUsecase(): GetDayOfTheWeekUsecase = GetDayOfTheWeekUsecase()
+    @Provides
+    @Singleton
+    fun provideGetCurrentMonthUsecase(): GetCurrentMonth = GetCurrentMonth()
 }

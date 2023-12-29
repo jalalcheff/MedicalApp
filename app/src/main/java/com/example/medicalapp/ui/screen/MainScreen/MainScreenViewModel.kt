@@ -10,6 +10,7 @@ import com.example.medicalapp.domain.ClincDetailsUsecase
 import com.example.medicalapp.domain.CurrentDateInstance
 import com.example.medicalapp.domain.GetAllClincPatientsUsecase
 import com.example.medicalapp.domain.GetCurrentDateUsecase
+import com.example.medicalapp.domain.GetCurrentMonth
 import com.example.medicalapp.domain.GetCurrentSevenDays
 import com.example.medicalapp.domain.SetPatientInSpecificDateUsecase
 import com.example.medicalapp.remote.RemoteDatasourceImp
@@ -30,11 +31,13 @@ class MainScreenViewModel @Inject constructor(
     private val clincDetailsUsecase: ClincDetailsUsecase,
     private val getCurrentDateUsecase: GetCurrentDateUsecase,
     private val getAllClincPatientsUsecase: GetAllClincPatientsUsecase,
-    private val getCurrentSevenDays: GetCurrentSevenDays
+    private val getCurrentSevenDays: GetCurrentSevenDays,
+    private val getCurrentMonth: GetCurrentMonth
 ) : ViewModel() {
     private val uid = MainScreenArgs(savedStateHandle).name
     private val _mainScreenData = MutableStateFlow(MainScreenUiState())
     val mainScreenData = _mainScreenData.asStateFlow()
+
     init {
         Log.i("jalal", "the passed uid is $uid")
         Log.i("jalal", "seven days are : ${getCurrentSevenDays.getCurrentSevenDay()} and ${1 % 7}")
@@ -54,26 +57,12 @@ class MainScreenViewModel @Inject constructor(
         Log.i("stateNextSevenDays", "next seven days : ${_mainScreenData.value.nextSevenDays}")
     }
 
-    /*    private suspend fun setPatient() {
-            val date: String =
-                "${_mainScreenData.value.dayOfTheMonth} ${_mainScreenData.value.year} ${_mainScreenData.value.monthName}"
-            val currentTime = Calendar.getInstance().time.time
-            Log.i("jalalTime", "time is : $currentTime")
-            setPatientInSpecificDateUsecase.setPatientInSpecificDate(
-                "m5rQJcFp8KbqvQIc0OndFzmxNB72", date, PatientResource(
-                    name = "محمد قاسم كاظم",
-                    query = 1,
-                    reservationDate = date,
-                    age = 23,
-                    reservationTime = "15:00"
-                )
-            )
-        }*/
 
     suspend fun fetchPatientsDetails(
         date: String = "${_mainScreenData.value.dayOfTheMonth} ${_mainScreenData.value.year} ${_mainScreenData.value.monthName}",
     ) {
         val patients = getAllClincPatientsUsecase.getAllPatients(uid = uid.toString(), date = date)
+        Log.i("myDate", "date before: $date")
         _mainScreenData.update {
             it.copy(patients = patients)
         }
@@ -103,5 +92,20 @@ class MainScreenViewModel @Inject constructor(
             )
         }
         Log.i("jalalDoc", "doctor name is ${_mainScreenData.value.doctorName}")
+    }
+
+    suspend fun updateCardState(index: Int) {
+        val currentMonth = getCurrentMonth.getCurrentMonth(_mainScreenData.value.nextSevenDays[index].month.toInt())
+        val date: String =
+            "${_mainScreenData.value.nextSevenDays[index].day} " +
+                    "${_mainScreenData.value.nextSevenDays[index].year} " +
+                   currentMonth
+        val patients = getAllClincPatientsUsecase.getAllPatients(uid = uid.toString(), date = date)
+        val selectedCard = getCurrentSevenDays.getCurrentSevenDay().toNextSevenDaysState()
+        selectedCard[index].isSelected = true
+        _mainScreenData.update {
+            it.copy(nextSevenDays = selectedCard, patients = patients)
+        }
+        Log.i("myDate", "date before: $date")
     }
 }

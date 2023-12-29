@@ -17,7 +17,9 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +40,7 @@ import com.example.medicalapp.ui.compasible.VerticalSpacer
 import com.example.medicalapp.ui.screen.MainScreen.MainScreenUiState
 import com.example.medicalapp.ui.screen.MainScreen.MainScreenViewModel
 import com.example.medicalapp.ui.screen.addPatientScreen.navigateToAddPatientScreen
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -46,19 +49,24 @@ fun MainScreen(
     viewModel: MainScreenViewModel = hiltViewModel(),
 ) {
     val state by viewModel.mainScreenData.collectAsState()
+    val coroutine = rememberCoroutineScope()
     MainContent(
         state = state,
         onClickAddPatient = {
             navController.navigateToAddPatientScreen(state.uid)
+        },
+        onClickCard = {
+            coroutine.launch { viewModel.updateCardState(it) }
         }
-        )
+    )
 }
 
 @Composable
 fun MainContent(
     state: MainScreenUiState,
-    onClickAddPatient: () -> Unit
-    ) {
+    onClickAddPatient: () -> Unit,
+    onClickCard: (index: Int) -> Unit,
+) {
     Log.i("compasible", "days are ${state.nextSevenDays}")
     Column(
         modifier = Modifier
@@ -93,14 +101,20 @@ fun MainContent(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.End
         ) {
-            val nextSevenDaysState =  state.nextSevenDays
+            val nextSevenDaysState = state.nextSevenDays
             BlackText(text = "ايام تواجد الطبيب", size = 14)
             VerticalSpacer(space = 8)
             Log.i("compasible", "days size : ${state.nextSevenDays.size}")
             LazyRow(
                 content = {
                     items(nextSevenDaysState.size) {
-                            DateRecyclerScreen(day = nextSevenDaysState[it].dayName, date = nextSevenDaysState[it].day, isSelected = nextSevenDaysState[it].isSelected)
+                        DateRecyclerScreen(
+                            day = state.nextSevenDays[it].dayName,
+                            date = state.nextSevenDays[it].day,
+                            isSelected = state.nextSevenDays[it].isSelected,
+                            onClickCard,
+                            index = it
+                        )
                     }
                 },
             )
@@ -113,31 +127,31 @@ fun MainContent(
             BlackText(text = "المراجعين", size = 14)
             VerticalSpacer(space = 24)
             Box() {
-            LazyColumn(
-                content = {
-                    items(patients.size) {
+                LazyColumn(
+                    content = {
+                        items(patients.size) {
                             PatientQueryCard(
                                 patientName = patients[it].name,
                                 query = patients[it].query,
                                 reservationDate = patients[it].reservationDate
                             )
-                    }
-                },
-            )
-            FloatingActionButton(
-                onClick = onClickAddPatient,
-                containerColor = Color(0xFF18A0FB),
-                modifier = Modifier
-                    .align(alignment = Alignment.BottomEnd)
-                    .padding(bottom = 16.dp)
-            )
-            {
-                Image(
-                    painter = painterResource(id = R.drawable.baseline_add_24),
-                    contentDescription = "addPatient",
-                    colorFilter = ColorFilter.tint(Color.White),
+                        }
+                    },
+                )
+                FloatingActionButton(
+                    onClick = onClickAddPatient,
+                    containerColor = Color(0xFF18A0FB),
+                    modifier = Modifier
+                        .align(alignment = Alignment.BottomEnd)
+                        .padding(bottom = 16.dp)
+                )
+                {
+                    Image(
+                        painter = painterResource(id = R.drawable.baseline_add_24),
+                        contentDescription = "addPatient",
+                        colorFilter = ColorFilter.tint(Color.White),
                     )
-            }
+                }
             }
         }
 
@@ -149,5 +163,4 @@ fun MainContent(
 @Composable
 @Preview(widthDp = 360, heightDp = 800)
 fun PreviewMainScreen() {
-    MainContent(MainScreenUiState(),{})
 }

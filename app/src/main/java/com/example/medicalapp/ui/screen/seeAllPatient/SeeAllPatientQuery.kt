@@ -47,7 +47,7 @@ fun SeeAllPatientQueryContent() {
             content = {
                 items(10) {
                     for (i in 0..10) {
-                        DateRecyclerContent("","",false)
+                        DateRecyclerContent("","",false,{},4)
                     }
                 }
             },

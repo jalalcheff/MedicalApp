@@ -5,7 +5,7 @@ import com.example.medicalapp.remote.resource.clincResource.PatientResource
 
 data class MainScreenUiState(
     val uid: String = "",
-    val doctorName: String = "" ,
+    val doctorName: String = "",
     val docotorField: String = "",
     val clincStartTime: String = "",
     val clincEndTime: String = "",
@@ -14,15 +14,9 @@ data class MainScreenUiState(
     val monthName: String = "",
     val year: String = "",
     val patients: List<PatientResource> = emptyList(),
-    val nextSevenDays: List<NextSevenDaysState> = emptyList()
+    var nextSevenDays: List<NextSevenDaysState> = mutableListOf(NextSevenDaysState())
 )
 {
-/*    data class Patients(
-        val name: String = "",
-        val query: Int = 0,
-        val reservationDate: String = ""
-    )
-    */
     data class NextSevenDaysState(
     val dayName: String = "",
     val day: String = "",

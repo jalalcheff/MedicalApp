@@ -9,7 +9,8 @@ class GetCurrentDateUsecase {
             time = "${currentCalendar.get(Calendar.HOUR)} : ${currentCalendar.get(Calendar.MINUTE)}",
             day = GetDayOfTheWeekUsecase().getDayOfTheWeek(currentCalendar.get(Calendar.DAY_OF_WEEK)),
             month = "${currentCalendar.get(Calendar.DAY_OF_MONTH)}",
-            monthName = GetCurrentMonth().getCurrentMonth(currentCalendar.get(Calendar.MONTH)),
+            monthName = GetCurrentMonth().getCurrentMonth(((currentCalendar.get(Calendar.MONTH)+1)%13+1)),
+         //   monthName = ((currentCalendar.get(Calendar.MONTH)+1)%12+1).toString(),
             year = "${currentCalendar.get(Calendar.YEAR)}"
         )
     }

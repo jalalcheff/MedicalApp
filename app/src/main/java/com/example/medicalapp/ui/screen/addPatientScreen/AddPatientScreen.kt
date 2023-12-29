@@ -134,7 +134,7 @@ fun AddPatientContent(
             horizontalArrangement = Arrangement.End
         ){
             items(30){
-                DateRecyclerContent("","",false)
+                DateRecyclerContent("","",false,{},4)
             }
         }
         VerticalSpacer(space = 48)
