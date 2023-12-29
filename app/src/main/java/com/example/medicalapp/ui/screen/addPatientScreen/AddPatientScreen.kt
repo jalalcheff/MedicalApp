@@ -1,5 +1,8 @@
 package com.example.medicalapp.ui.screen.addPatientScreen
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,6 +37,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddPatientScreen(
     navController: NavController,
@@ -47,6 +51,9 @@ fun AddPatientScreen(
             coroutineScope.launch {
                 viewModel.addNewPatient()
             }
+        },
+        {
+            viewModel.updateSelectedDate(it)
         }
         )
 }
@@ -54,7 +61,8 @@ fun AddPatientScreen(
 @Composable
 fun AddPatientContent(
     state: AddPatientUiState,
-    onClickAddPatien:() -> Unit
+    onClickAddPatien:() -> Unit,
+    onSelectDate:(Int) -> Unit
     ) {
     Column(
         modifier = Modifier
@@ -133,8 +141,8 @@ fun AddPatientContent(
         LazyRow(
             horizontalArrangement = Arrangement.End
         ){
-            items(30){
-                DateRecyclerContent("","",false,{},4)
+            items(state.nextSevenDays.size){
+                DateRecyclerContent(state.nextSevenDays[it].dayName,state.nextSevenDays[it].day,state.nextSevenDays[it].isSelected,onSelectDate,it)
             }
         }
         VerticalSpacer(space = 48)
@@ -145,7 +153,5 @@ fun AddPatientContent(
 @Composable
 @Preview(widthDp = 360, heightDp = 800)
 fun PreviewPatientScreenStepOne() {
-    AddPatientContent(state = AddPatientUiState()) {
-        
-    }
+
 }
