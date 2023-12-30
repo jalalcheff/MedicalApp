@@ -41,10 +41,6 @@ class LoginViewModel @Inject constructor(
                 uid = uid
             )
         }
-        /* if (loginUsecase.login(email, password) != "invalid")
-             TODO("navigate to the other screen")
-             else
-                 TODO("show invalid message")*/
     }
     fun getData(){
         _userData.value.uid

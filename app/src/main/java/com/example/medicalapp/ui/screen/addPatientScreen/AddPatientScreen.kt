@@ -71,7 +71,7 @@ fun AddPatientContent(
             .padding(horizontal = 16.dp, vertical = 24.dp)
     ) {
         var patientName by remember { mutableStateOf(state.name) }
-        var patientAge by remember { mutableStateOf(state.age) }
+        var patientAge by remember { mutableStateOf("") }
         var patientReservationTime by remember { mutableStateOf(state.reservationTime) }
         var patientReservationDate by remember { mutableStateOf(state.reservationDate) }
 
@@ -125,9 +125,10 @@ fun AddPatientContent(
                     ) {
                     BlackText(text = "العمر", size = 12)
                     VerticalSpacer(space = 8)
-                    LoginTextFiled(labelText = "عمر المراجع", value = patientAge.toString(), textAlign = TextAlign.End, onValueChange = {
-                        state.age = it.toInt()
-                        patientAge = it.toInt()
+                    LoginTextFiled(labelText = "عمر المراجع", value = patientAge, textAlign = TextAlign.End, onValueChange = {
+                        if (it != "")
+                            state.age = it.toInt()
+                            patientAge = it
                     },)
                 }
             }

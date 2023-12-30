@@ -50,9 +50,10 @@ class MainScreenViewModel @Inject constructor(
     }
 
     private fun fetchNextSevenDays() {
-        val nextSevenDays = getCurrentSevenDays.getCurrentSevenDay()
+        val nextSevenDays = getCurrentSevenDays.getCurrentSevenDay().toNextSevenDaysState()
+        nextSevenDays[0].isSelected = true
         _mainScreenData.update {
-            it.copy(nextSevenDays = nextSevenDays.toNextSevenDaysState())
+            it.copy(nextSevenDays = nextSevenDays)
         }
         Log.i("stateNextSevenDays", "next seven days : ${_mainScreenData.value.nextSevenDays}")
     }
