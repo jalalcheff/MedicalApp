@@ -23,9 +23,7 @@ class RemoteDatasourceImp() : RemoteDatasource {
         var type = ""
         auth.signInWithEmailAndPassword(email ?: "", password ?: "").addOnCompleteListener {
             if (it.isSuccessful)
-                type = it.result.user?.uid ?: ""
-            else
-                type = it.exception?.message.toString()
+                type = it.result.user?.uid ?: throw Exception("invalid info")
         }.await()
         return type
     }

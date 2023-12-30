@@ -1,6 +1,8 @@
 package com.example.medicalapp.ui.screen.loginScreen
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -41,6 +43,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
@@ -52,8 +55,10 @@ fun LoginScreen(
         state = state,
         onClickLogin = { email, password ->
             coroutineScope.launch {
+                if (!state.exception) {
+                    navController.navigateToMainScreen(viewModel.userData.value.uid)
+                }
                 viewModel.login(email = email, password = password)
-                navController.navigateToMainScreen(viewModel.userData.value.uid)
             }
         }
 

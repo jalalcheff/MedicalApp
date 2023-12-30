@@ -32,15 +32,22 @@ class LoginViewModel @Inject constructor(
     private val _userData = MutableStateFlow(LoginUiState())
     val userData = _userData.asStateFlow()
     suspend fun login(email: String, password: String) {
-        val uid = loginUsecase.login(email, password)
-        Log.i("jalal", "email is $email uid is $uid")
-        _userData.update {
-            it.copy(
-                username = email,
-                password = password,
-                uid = uid
-            )
+        try {
+            val uid = loginUsecase.login(email, password)
+            Log.i("jalal", "email is $email uid is $uid")
+            _userData.update {
+                it.copy(
+                    username = email,
+                    password = password,
+                    uid = uid,
+                    exception = false
+                )
+            }
         }
+        catch (e: Exception){
+            Log.i("loginEx", e.message.toString())
+        }
+
     }
     fun getData(){
         _userData.value.uid

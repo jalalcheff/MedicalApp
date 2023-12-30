@@ -4,4 +4,5 @@ data class LoginUiState(
     var username: String = "",
     var password: String = "",
     val uid:String = "",
+    var exception: Boolean = true
 )
