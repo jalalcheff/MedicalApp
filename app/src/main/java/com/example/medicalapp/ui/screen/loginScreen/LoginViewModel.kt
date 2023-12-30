@@ -1,7 +1,9 @@
 package com.example.medicalapp.ui.screen.loginScreen
 
+import android.content.Context
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -31,7 +33,7 @@ class LoginViewModel @Inject constructor(
     }
     private val _userData = MutableStateFlow(LoginUiState())
     val userData = _userData.asStateFlow()
-    suspend fun login(email: String, password: String) {
+    suspend fun login(email: String, password: String, context: Context) {
         try {
             val uid = loginUsecase.login(email, password)
             Log.i("jalal", "email is $email uid is $uid")
@@ -45,6 +47,7 @@ class LoginViewModel @Inject constructor(
             }
         }
         catch (e: Exception){
+            Toast.makeText(context, e.message.toString(), Toast.LENGTH_LONG).show()
             Log.i("loginEx", e.message.toString())
         }
 

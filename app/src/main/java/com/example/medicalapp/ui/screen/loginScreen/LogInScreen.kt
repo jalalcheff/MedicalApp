@@ -38,6 +38,7 @@ import com.example.medicalapp.remote.RemoteDatasourceImp
 import com.example.medicalapp.repository.RemoteDatasource
 import com.example.medicalapp.ui.compasible.LoginBottomSheet
 import com.example.medicalapp.ui.screen.MainScreen.navigateToMainScreen
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.currentCoroutineContext
@@ -49,6 +50,7 @@ fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
     navController: NavController,
 ) {
+    val context = LocalContext.current.applicationContext
     val state by viewModel.userData.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     LoginContent(
@@ -58,7 +60,7 @@ fun LoginScreen(
                 if (!state.exception) {
                     navController.navigateToMainScreen(viewModel.userData.value.uid)
                 }
-                viewModel.login(email = email, password = password)
+                viewModel.login(email = email, password = password, context = context)
             }
         }
 
