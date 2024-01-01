@@ -33,6 +33,7 @@ import com.example.medicalapp.ui.compasible.DateRecyclerContent
 import com.example.medicalapp.ui.compasible.GeneralButton
 import com.example.medicalapp.ui.compasible.LoginTextFiled
 import com.example.medicalapp.ui.compasible.VerticalSpacer
+import com.example.medicalapp.ui.screen.MainScreen.navigateToMainScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -50,8 +51,10 @@ fun AddPatientScreen(
         onClickAddPatien = {
             coroutineScope.launch {
                 viewModel.addNewPatient()
+                navController.popBackStack()
             }
         },
+        onSelectDate =
         {
             viewModel.updateSelectedDate(it)
         }

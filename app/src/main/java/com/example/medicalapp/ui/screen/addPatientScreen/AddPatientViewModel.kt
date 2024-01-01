@@ -53,7 +53,8 @@ class AddPatientViewModel @Inject constructor(
                 name = _AddPatientState.value.name,
                 age = _AddPatientState.value.age,
                 reservationTime = _AddPatientState.value.reservationTime,
-                reservationDate = date
+                reservationDate = date,
+                uid = uid
             )
         }
         setPatientInSpecificDateUsecase.setPatientInSpecificDate(

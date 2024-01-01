@@ -12,6 +12,7 @@ import com.example.medicalapp.domain.GetAllClincPatientsUsecase
 import com.example.medicalapp.domain.GetCurrentDateUsecase
 import com.example.medicalapp.domain.GetCurrentMonth
 import com.example.medicalapp.domain.GetCurrentSevenDays
+import com.example.medicalapp.domain.GetNumberOfPatientsUsecase
 import com.example.medicalapp.domain.SetPatientInSpecificDateUsecase
 import com.example.medicalapp.remote.RemoteDatasourceImp
 import com.example.medicalapp.remote.resource.clincResource.PatientResource
@@ -32,7 +33,8 @@ class MainScreenViewModel @Inject constructor(
     private val getCurrentDateUsecase: GetCurrentDateUsecase,
     private val getAllClincPatientsUsecase: GetAllClincPatientsUsecase,
     private val getCurrentSevenDays: GetCurrentSevenDays,
-    private val getCurrentMonth: GetCurrentMonth
+    private val getCurrentMonth: GetCurrentMonth,
+    private val getNumberOfPatientsUsecase: GetNumberOfPatientsUsecase
 ) : ViewModel() {
     private val uid = MainScreenArgs(savedStateHandle).name
     private val _mainScreenData = MutableStateFlow(MainScreenUiState())
@@ -49,6 +51,11 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
+    private suspend fun fetchNumberOfPatients(index: Int = 0) {
+        val currentDate = "${_mainScreenData.value.dayOfTheMonth} ${_mainScreenData.value.year} ${_mainScreenData.value.monthName}"
+        val numberOfPatients = getNumberOfPatientsUsecase.getNumberOfPatients(uid = uid.toString(), date = currentDate)
+    }
+
     private fun fetchNextSevenDays() {
         val nextSevenDays = getCurrentSevenDays.getCurrentSevenDay().toNextSevenDaysState()
         nextSevenDays[0].isSelected = true
@@ -60,12 +67,12 @@ class MainScreenViewModel @Inject constructor(
 
 
     suspend fun fetchPatientsDetails(
-        date: String = "${_mainScreenData.value.dayOfTheMonth} ${_mainScreenData.value.year} ${_mainScreenData.value.monthName}",
+        date: String = "${"%02d".format(_mainScreenData.value.dayOfTheMonth.toInt())} ${_mainScreenData.value.year} ${_mainScreenData.value.monthName}",
     ) {
         val patients = getAllClincPatientsUsecase.getAllPatients(uid = uid.toString(), date = date)
         Log.i("myDate", "date before: $date")
         _mainScreenData.update {
-            it.copy(patients = patients)
+            it.copy(patients = patients.toPatientState())
         }
     }
 
@@ -89,7 +96,8 @@ class MainScreenViewModel @Inject constructor(
                 docotorField = clincDetails.doctorField,
                 clincStartTime = clincDetails.clincStartTime,
                 clincEndTime = clincDetails.clincEndTime,
-                uid = clincUid
+                uid = clincUid,
+                isLoading = false
             )
         }
         Log.i("jalalDoc", "doctor name is ${_mainScreenData.value.doctorName}")
@@ -105,7 +113,7 @@ class MainScreenViewModel @Inject constructor(
         val selectedCard = getCurrentSevenDays.getCurrentSevenDay().toNextSevenDaysState()
         selectedCard[index].isSelected = true
         _mainScreenData.update {
-            it.copy(nextSevenDays = selectedCard, patients = patients)
+            it.copy(nextSevenDays = selectedCard, patients = patients.toPatientState())
         }
         Log.i("myDate", "date before: $date")
     }

@@ -108,6 +108,28 @@ class RemoteDatasourceImp() : RemoteDatasource {
         return isPatientAdded
     }
 
+    override suspend fun getNumberOfPatientsInSepcificDate(uid: String, date: String): Int {
+        val patients = mutableListOf<PatientResource>()
+        val db = Firebase.firestore
+        db.collection("clinc").document(uid).collection("patientQuery").document(date).collection("patients").get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val data = document.data
+                    patients.add(PatientResource(
+                        name = data[RemoteUils.PAITENT_NAME_KEY].toString(),
+                        query = data[RemoteUils.QUERY_KEY].toString().toInt(),
+                        reservationDate = data[RemoteUils.RESERVATION_KEY].toString(),
+                        age = data[RemoteUils.AGE_KEY].toString().toInt(),
+                        reservationTime = data[RemoteUils.RESERVATION_TIME_KEY].toString()
+                    ))
+                    Log.i("jalalPati", "my data is ${document.data}")
+                }
+            }.addOnFailureListener { exception ->
+                Log.i("jalalDoc", "${exception.message}")
+            }.await()
+        return patients.size
+    }
+
     private suspend fun <T> tryToExecute(func: suspend () -> Task<AuthResult>): String {
         val response = func()
         // Log.d("TAG", "tryToExecute: ${response.code()}")

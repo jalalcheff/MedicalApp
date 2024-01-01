@@ -10,7 +10,8 @@ data class AddPatientUiState(
     var reservationTime: String = "",
     val query: Int = Int.MAX_VALUE,
     var nextSevenDays: List<NextSevenDaysState> = mutableListOf(NextSevenDaysState()),
-    var selectedIndex: Int = 0
+    var selectedIndex: Int = 0,
+    var uid: String = ""
 ) {
     data class NextSevenDaysState(
         val dayName: String = "",

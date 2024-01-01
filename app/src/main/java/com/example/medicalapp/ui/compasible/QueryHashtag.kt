@@ -10,17 +10,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun QueryHashtag(query: Int){
+fun QueryHashtag(query: Int) {
     Card(
-        colors = CardDefaults.cardColors(Color(0xFFFDEFEF)),
+        colors =
+        when (query) {
+            1 -> CardDefaults.cardColors(Color(0xFFFDEFEF))
+            else -> CardDefaults.cardColors(Color(0xFFE8F6FF))
+        },
         shape = RoundedCornerShape(4.dp),
-        ) {
-        HashtagText(text = "#$query", color = 0xFFEA5B5B)
+    ) {
+        when (query) {
+            1 -> HashtagText(text = "#$query", color = 0xFFEA5B5B)
+            else -> HashtagText(text = "#$query", color = 0xFF18A0FB)
+        }
     }
 }
 
 @Composable
 @Preview(widthDp = 360, heightDp = 800)
-fun PreviewQueryHashtag(){
-    QueryHashtag(0)
+fun PreviewQueryHashtag() {
+    QueryHashtag(2)
 }
