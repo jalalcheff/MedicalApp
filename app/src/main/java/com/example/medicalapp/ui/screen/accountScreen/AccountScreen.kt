@@ -1,6 +1,5 @@
-package com.example.medicalapp.ui.screen.doctorInformationScreen
+package com.example.medicalapp.ui.screen.accountScreen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,34 +8,26 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.medicalapp.R
 import com.example.medicalapp.ui.compasible.BlackText
 import com.example.medicalapp.ui.compasible.DoctorInformationTextField
-import com.example.medicalapp.ui.compasible.EditedProfileImage
 import com.example.medicalapp.ui.compasible.GeneralButton
-import com.example.medicalapp.ui.compasible.GrayText
-import com.example.medicalapp.ui.compasible.LoginTextFiled
 import com.example.medicalapp.ui.compasible.MainIcons
 import com.example.medicalapp.ui.compasible.VerticalSpacer
 
 @Composable
-fun DoctorInformationScreen(){
+fun AccountScreen(){
 
 }
 
 @Composable
-fun DoctorInformationContent(){
+fun AccountContent(){
     Column(
         modifier = Modifier
             .background(Color(0xFFF9F9F9))
@@ -56,15 +47,13 @@ fun DoctorInformationContent(){
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            EditedProfileImage(imageResource = R.drawable.doctor_image)
-            VerticalSpacer(space = 48)
-           DoctorInformationTextField(textFieldName = "اسم الطبيب", trailingImageResource = R.drawable.doctor_name)
+            BlackText(text = "لتحسين أمان حسابك، يُفضل تغيير كلمة المرور بشكل دوري. الرجاء اتباع الخطوات أدناه لتغيير كلمة المرور الخاصة بك", size = 14)
+            VerticalSpacer(space = 24)
+            DoctorInformationTextField(textFieldName = "ادخل كلمة المرور الحالية", trailingImageResource = R.drawable.lock, leadingImageResource = R.drawable.eye_svgrepo_com)
             VerticalSpacer(space = 16)
-            DoctorInformationTextField(textFieldName = "التخصص", trailingImageResource = R.drawable.doctor_field)
+            DoctorInformationTextField(textFieldName = "ادخل كلمة المرور الجديدة", trailingImageResource = R.drawable.lock, leadingImageResource = R.drawable.eye_svgrepo_com)
             VerticalSpacer(space = 16)
-            DoctorInformationTextField(textFieldName = "وقت العمل", trailingImageResource = R.drawable.working_time)
-            VerticalSpacer(space = 16)
-            DoctorInformationTextField(textFieldName = "ايام العمل", trailingImageResource = R.drawable.working_days)
+            DoctorInformationTextField(textFieldName = "ادخل تاكيد كلمة المرور الجديدة", trailingImageResource = R.drawable.lock, leadingImageResource = R.drawable.eye_svgrepo_com)
         }
 
         GeneralButton(text = "تعديل", onClickButton = {})
@@ -73,6 +62,6 @@ fun DoctorInformationContent(){
 
 @Composable
 @Preview
-fun PreviewDoctorInformationContent(){
-    DoctorInformationContent()
+fun PreviewAccountContent(){
+    AccountContent()
 }
