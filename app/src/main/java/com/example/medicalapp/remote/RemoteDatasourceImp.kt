@@ -51,23 +51,27 @@ class RemoteDatasourceImp() : RemoteDatasource {
             RemoteUils.clincEndTime
         )
     }
+
     override suspend fun getPatientsInSepcificDate(
         uid: String,
         date: String,
     ): List<PatientResource> {
         val patients = mutableListOf<PatientResource>()
         val db = Firebase.firestore
-        db.collection("clinc").document(uid).collection("patientQuery").document(date).collection("patients").get()
+        db.collection("clinc").document(uid).collection("patientQuery").document(date)
+            .collection("patients").get()
             .addOnSuccessListener { result ->
                 for (document in result) {
                     val data = document.data
-                    patients.add(PatientResource(
-                        name = data[RemoteUils.PAITENT_NAME_KEY].toString(),
-                        query = data[RemoteUils.QUERY_KEY].toString().toInt(),
-                        reservationDate = data[RemoteUils.RESERVATION_KEY].toString(),
-                        age = data[RemoteUils.AGE_KEY].toString().toInt(),
-                        reservationTime = data[RemoteUils.RESERVATION_TIME_KEY].toString()
-                    ))
+                    patients.add(
+                        PatientResource(
+                            name = data[RemoteUils.PAITENT_NAME_KEY].toString(),
+                            query = data[RemoteUils.QUERY_KEY].toString().toInt(),
+                            reservationDate = data[RemoteUils.RESERVATION_KEY].toString(),
+                            age = data[RemoteUils.AGE_KEY].toString().toInt(),
+                            reservationTime = data[RemoteUils.RESERVATION_TIME_KEY].toString()
+                        )
+                    )
                     Log.i("jalalPati", "my data is ${document.data}")
                 }
             }.addOnFailureListener { exception ->
@@ -101,8 +105,8 @@ class RemoteDatasourceImp() : RemoteDatasource {
                 Log.d("jalal", "DocumentSnapshot successfully written!")
                 isPatientAdded = true
             }
-            .addOnFailureListener {
-                    e -> Log.w("jalal", "Error writing document", e)
+            .addOnFailureListener { e ->
+                Log.w("jalal", "Error writing document", e)
                 isPatientAdded = false
             }.await()
         return isPatientAdded
@@ -111,23 +115,50 @@ class RemoteDatasourceImp() : RemoteDatasource {
     override suspend fun getNumberOfPatientsInSepcificDate(uid: String, date: String): Int {
         val patients = mutableListOf<PatientResource>()
         val db = Firebase.firestore
-        db.collection("clinc").document(uid).collection("patientQuery").document(date).collection("patients").get()
+        db.collection("clinc").document(uid).collection("patientQuery").document(date)
+            .collection("patients").get()
             .addOnSuccessListener { result ->
                 for (document in result) {
                     val data = document.data
-                    patients.add(PatientResource(
-                        name = data[RemoteUils.PAITENT_NAME_KEY].toString(),
-                        query = data[RemoteUils.QUERY_KEY].toString().toInt(),
-                        reservationDate = data[RemoteUils.RESERVATION_KEY].toString(),
-                        age = data[RemoteUils.AGE_KEY].toString().toInt(),
-                        reservationTime = data[RemoteUils.RESERVATION_TIME_KEY].toString()
-                    ))
+                    patients.add(
+                        PatientResource(
+                            name = data[RemoteUils.PAITENT_NAME_KEY].toString(),
+                            query = data[RemoteUils.QUERY_KEY].toString().toInt(),
+                            reservationDate = data[RemoteUils.RESERVATION_KEY].toString(),
+                            age = data[RemoteUils.AGE_KEY].toString().toInt(),
+                            reservationTime = data[RemoteUils.RESERVATION_TIME_KEY].toString()
+                        )
+                    )
                     Log.i("jalalPati", "my data is ${document.data}")
                 }
             }.addOnFailureListener { exception ->
                 Log.i("jalalDoc", "${exception.message}")
             }.await()
         return patients.size
+    }
+
+    override suspend fun editAccountInformation(
+        doctorName: String,
+        fieldName: String,
+        startExistenceTime: String,
+        endExistenceTime: String,
+        clincUid: String
+    ) {
+        val editedAccountInformation = mapOf(
+            DOCTOR_NAME to doctorName,
+            DOCTOR_FIELD to fieldName,
+            CLINC_START_TIME to startExistenceTime,
+            CLINC_END_TIME to endExistenceTime
+        )
+        val db = Firebase.firestore
+        db.collection("clinc").document(clincUid)
+            .collection("clincDetails").document("details")
+            .set(editedAccountInformation) .addOnSuccessListener {
+                Log.d("jalal", "DocumentSnapshot successfully written!")
+            }
+            .addOnFailureListener { e ->
+                throw Exception(e.message)
+            }.await()
     }
 
     private suspend fun <T> tryToExecute(func: suspend () -> Task<AuthResult>): String {
@@ -138,5 +169,12 @@ class RemoteDatasourceImp() : RemoteDatasource {
         } else {
             throw NetworkException.UnAuthorizedException
         }
+    }
+
+    companion object {
+        const val DOCTOR_NAME = "doctorName"
+        const val DOCTOR_FIELD = "fieldName"
+        const val CLINC_START_TIME = "clincStartTime"
+        const val CLINC_END_TIME = "clincEndTime"
     }
 }

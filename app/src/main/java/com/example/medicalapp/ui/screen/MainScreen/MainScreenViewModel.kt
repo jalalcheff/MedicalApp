@@ -117,4 +117,7 @@ class MainScreenViewModel @Inject constructor(
         }
         Log.i("myDate", "date before: $date")
     }
+    fun updateLoadingState(){
+        _mainScreenData.update { it.copy(isLoading = true) }
+    }
 }

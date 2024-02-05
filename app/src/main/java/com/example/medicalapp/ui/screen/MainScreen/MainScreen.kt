@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,18 +51,23 @@ fun MainScreen(
     navController: NavController,
     viewModel: MainScreenViewModel = hiltViewModel(),
 ) {
+    var name by remember {
+        mutableStateOf("one")
+    }
     val state by viewModel.mainScreenData.collectAsState()
     val coroutine = rememberCoroutineScope()
     MainContent(
         state = state,
         onClickAddPatient = {
             navController.navigateToAddPatientScreen(state.uid)
+            name = "two"
         },
         onClickCard = {
             coroutine.launch { viewModel.updateCardState(it) }
         },
         onClickSettingsIcon = {
             navController.navigateToSettingsScreen(state.uid)
+            name = "three"
         }
     )
 }
@@ -73,6 +79,7 @@ fun MainContent(
     onClickCard: (index: Int) -> Unit,
     onClickSettingsIcon: () -> Unit
 ) {
+
     Log.i("compasible", "days are ${state.nextSevenDays}")
     if (state.isLoading)
         LoadingState()

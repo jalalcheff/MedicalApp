@@ -12,6 +12,7 @@ import com.example.medicalapp.domain.GetCurrentDateUsecase
 import com.example.medicalapp.domain.GetCurrentMonth
 import com.example.medicalapp.domain.GetCurrentSevenDays
 import com.example.medicalapp.domain.GetNumberOfPatientsUsecase
+import com.example.medicalapp.domain.UpdateClincDetailsUsecase
 import com.example.medicalapp.ui.screen.MainScreen.MainScreenUiState
 import com.example.medicalapp.ui.screen.MainScreen.toNextSevenDaysState
 import com.example.medicalapp.ui.screen.MainScreen.toPatientState
@@ -29,6 +30,7 @@ class DoctorInformationScreenViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val clincDetailsUsecase: ClincDetailsUsecase,
     private val getCurrentSevenDays: GetCurrentSevenDays,
+    private val updateClincDetailsUsecase: UpdateClincDetailsUsecase,
 ) : ViewModel() {
     private val uid = DoctorInformationArgs(savedStateHandle).name
     private val _informationScreenData = MutableStateFlow(DoctorInformationUiState())
@@ -48,11 +50,28 @@ class DoctorInformationScreenViewModel @Inject constructor(
             it.copy(
                 doctorName = clincDetails.doctorName,
                 doctorField = clincDetails.doctorField,
-                doctorExistenceTime = "${clincDetails.clincStartTime} - ${clincDetails.clincEndTime}",
+                doctorStartTime = clincDetails.clincStartTime,
+                doctorEndTime = clincDetails.clincEndTime,
                 clincUid = clincUid,
                 isLoading = false
             )
         }
         Log.i("jalalDoc", "doctor name is ${_informationScreenData.value.doctorName}")
+    }
+
+    suspend fun updateAccountInformation(
+        doctorName: String,
+        fieldName: String,
+        startExistenceTime: String,
+        endExistenceTime: String,
+        clincUid: String,
+    ) {
+        updateClincDetailsUsecase.updateClincDetailsUsecase(
+            doctorName = doctorName,
+            fieldName = fieldName,
+            startExistenceTime = startExistenceTime,
+            endExistenceTime = endExistenceTime,
+            clincUid = clincUid
+        )
     }
 }

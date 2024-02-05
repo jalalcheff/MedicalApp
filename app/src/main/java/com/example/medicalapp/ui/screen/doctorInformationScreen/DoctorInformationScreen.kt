@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,41 +38,55 @@ import com.example.medicalapp.ui.compasible.EditedProfileImage
 import com.example.medicalapp.ui.compasible.GeneralButton
 import com.example.medicalapp.ui.compasible.GrayText
 import com.example.medicalapp.ui.compasible.HomeLoadingLines
+import com.example.medicalapp.ui.compasible.HorizontalSpacer
 import com.example.medicalapp.ui.compasible.LoginTextFiled
 import com.example.medicalapp.ui.compasible.MainIcons
 import com.example.medicalapp.ui.compasible.VerticalSpacer
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DoctorInformationScreen(
     navController: NavController,
     viewModel: DoctorInformationScreenViewModel = hiltViewModel(),
-){
+) {
+    val coroutineScope = rememberCoroutineScope()
     val state by viewModel.informationScreenData.collectAsState()
     DoctorInformationContent(
         state
-    ) { doctorName, doctorField, doctorExistenceTime ->
-
+    ) { doctorName, doctorField, doctorStartTime ->
+        coroutineScope.launch {
+        viewModel.updateAccountInformation(
+            doctorName = doctorName,
+            fieldName = doctorField,
+            startExistenceTime = doctorStartTime,
+            clincUid = state.clincUid,
+            endExistenceTime = state.doctorEndTime
+        )
+            navController.popBackStack()
+        }
     }
 }
 
 @Composable
 fun DoctorInformationContent(
     state: DoctorInformationUiState,
-    onClickEdit: (String, String, String) -> Unit
-){
-    if (state.isLoading){
-     HomeLoadingLines()
-    }
-    else {
+    onClickEdit: (String, String, String) -> Unit,
+) {
+    if (state.isLoading) {
+        HomeLoadingLines()
+    } else {
         var doctorName by remember {
             mutableStateOf(state.doctorName)
         }
         var doctorField by remember {
             mutableStateOf(state.doctorField)
         }
-        var doctorExistenceTime by remember {
-            mutableStateOf(state.doctorExistenceTime)
+        var doctorStartTime by remember {
+            mutableStateOf(state.doctorStartTime)
+        }
+        var doctorEndTime by remember {
+            mutableStateOf(state.doctorEndTime)
         }
         Column(
             modifier = Modifier
@@ -111,14 +127,27 @@ fun DoctorInformationContent(
                     }
                 )
                 VerticalSpacer(space = 16)
-                DoctorInformationTextField(
-                    textFieldName = "وقت العمل",
-                    trailingImageResource = R.drawable.working_time,
-                    textFieldValue = state.doctorExistenceTime,
-                    onValueChange = {
-                        doctorExistenceTime = it
-                    }
-                )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    DoctorInformationTextField(
+                        textFieldName = "من الساعة",
+                        trailingImageResource = R.drawable.working_time,
+                        textFieldValue = doctorStartTime,
+                        onValueChange = {
+                            doctorStartTime = it
+                        }
+                    )
+                    HorizontalSpacer(space = 12)
+                    DoctorInformationTextField(
+                        textFieldName = "الى الساعة",
+                        trailingImageResource = R.drawable.working_time,
+                        textFieldValue = doctorEndTime,
+                        onValueChange = {
+                            doctorEndTime = it
+                        }
+                    )
+                }
                 VerticalSpacer(space = 16)
                 DoctorInformationTextField(
                     textFieldName = "ايام العمل",
@@ -129,7 +158,7 @@ fun DoctorInformationContent(
 
             GeneralButton(
                 text = "تعديل",
-                onClickButton = { onClickEdit(doctorName, doctorField, doctorExistenceTime) }
+                onClickButton = { onClickEdit(doctorName, doctorField, doctorStartTime) }
             )
         }
     }
@@ -137,5 +166,5 @@ fun DoctorInformationContent(
 
 @Composable
 @Preview
-fun PreviewDoctorInformationContent(){
+fun PreviewDoctorInformationContent() {
 }
