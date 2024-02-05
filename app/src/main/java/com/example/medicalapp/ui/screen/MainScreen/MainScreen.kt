@@ -2,6 +2,9 @@ package com.example.medicalapp.ui.screen
 
 import android.os.Build
 import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -52,7 +57,12 @@ fun MainScreen(
     viewModel: MainScreenViewModel = hiltViewModel(),
 ) {
     var name by remember {
-        mutableStateOf("one")
+        mutableStateOf(1)
+    }
+    BackPressHandler(onBackPressedDispatcher = (LocalContext.current as ComponentActivity).onBackPressedDispatcher) {
+        // Handle back press as needed
+        name++
+        navController.navigateUp()
     }
     val state by viewModel.mainScreenData.collectAsState()
     val coroutine = rememberCoroutineScope()
@@ -60,14 +70,14 @@ fun MainScreen(
         state = state,
         onClickAddPatient = {
             navController.navigateToAddPatientScreen(state.uid)
-            name = "two"
+            name++
         },
         onClickCard = {
             coroutine.launch { viewModel.updateCardState(it) }
         },
         onClickSettingsIcon = {
             navController.navigateToSettingsScreen(state.uid)
-            name = "three"
+            name++
         }
     )
 }
@@ -182,4 +192,25 @@ fun MainContent(
 @Composable
 @Preview(widthDp = 360, heightDp = 800)
 fun PreviewMainScreen() {
+}
+@Composable
+fun BackPressHandler(
+    onBackPressedDispatcher: OnBackPressedDispatcher,
+    onBackPress: () -> Unit
+) {
+    val context = LocalContext.current
+
+    DisposableEffect(context) {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPress()
+            }
+        }
+
+        onBackPressedDispatcher.addCallback(callback)
+
+        onDispose {
+            callback.remove()
+        }
+    }
 }

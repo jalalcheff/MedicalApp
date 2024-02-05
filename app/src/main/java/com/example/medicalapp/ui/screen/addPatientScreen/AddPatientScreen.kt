@@ -51,11 +51,10 @@ fun AddPatientScreen(
         onClickAddPatien = {
             coroutineScope.launch {
                 viewModel.addNewPatient()
-                navController.popBackStack()
+                navController.navigateToMainScreen(state.uid, emptyBackStack = true)
             }
         },
-        onSelectDate =
-        {
+        onSelectDate = {
             viewModel.updateSelectedDate(it)
         }
         )

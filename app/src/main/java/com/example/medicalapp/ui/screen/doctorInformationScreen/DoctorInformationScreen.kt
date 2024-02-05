@@ -42,6 +42,7 @@ import com.example.medicalapp.ui.compasible.HorizontalSpacer
 import com.example.medicalapp.ui.compasible.LoginTextFiled
 import com.example.medicalapp.ui.compasible.MainIcons
 import com.example.medicalapp.ui.compasible.VerticalSpacer
+import com.example.medicalapp.ui.screen.MainScreen.navigateToMainScreen
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -63,7 +64,8 @@ fun DoctorInformationScreen(
             clincUid = state.clincUid,
             endExistenceTime = state.doctorEndTime
         )
-            navController.popBackStack()
+            navController.navigateToMainScreen(state.clincUid, true)
+           // navController.popBackStack(route = "MainScreen/${state.clincUid}", inclusive = false)
         }
     }
 }
@@ -73,7 +75,7 @@ fun DoctorInformationContent(
     state: DoctorInformationUiState,
     onClickEdit: (String, String, String) -> Unit,
 ) {
-    if (state.isLoading) {
+    if (!state.isLoading) {
         HomeLoadingLines()
     } else {
         var doctorName by remember {
@@ -128,23 +130,23 @@ fun DoctorInformationContent(
                 )
                 VerticalSpacer(space = 16)
                 Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
-                    DoctorInformationTextField(
-                        textFieldName = "من الساعة",
-                        trailingImageResource = R.drawable.working_time,
-                        textFieldValue = doctorStartTime,
-                        onValueChange = {
-                            doctorStartTime = it
-                        }
-                    )
-                    HorizontalSpacer(space = 12)
+
                     DoctorInformationTextField(
                         textFieldName = "الى الساعة",
                         trailingImageResource = R.drawable.working_time,
                         textFieldValue = doctorEndTime,
                         onValueChange = {
                             doctorEndTime = it
+                        }
+                    )
+                    DoctorInformationTextField(
+                        textFieldName = "من الساعة",
+                        trailingImageResource = R.drawable.working_time,
+                        textFieldValue = doctorStartTime,
+                        onValueChange = {
+                            doctorStartTime = it
                         }
                     )
                 }
@@ -165,6 +167,10 @@ fun DoctorInformationContent(
 }
 
 @Composable
-@Preview
+@Preview(widthDp = 360, heightDp = 800)
 fun PreviewDoctorInformationContent() {
+    DoctorInformationContent(state = DoctorInformationUiState(), onClickEdit = ::get)
+}
+fun get (name: String = "", age: String = "", data: String = ""): Unit{
+
 }

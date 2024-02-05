@@ -58,7 +58,7 @@ fun LoginScreen(
         onClickLogin = { email, password ->
             coroutineScope.launch {
                 if (!state.exception) {
-                    navController.navigateToMainScreen(viewModel.userData.value.uid)
+                    navController.navigateToMainScreen(viewModel.userData.value.uid, emptyBackStack = true)
                 }
                 viewModel.login(email = email, password = password, context = context)
             }
