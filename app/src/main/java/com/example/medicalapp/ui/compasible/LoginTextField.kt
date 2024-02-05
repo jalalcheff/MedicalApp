@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.sp
 import com.example.medicalapp.R
 import com.example.medicalapplication.ui.theme.expoArabic
@@ -44,7 +45,7 @@ fun LoginTextFiled(
                     .alpha(0.5f))
         },
         onValueChange = onValueChange,
-        textStyle = TextStyle(fontFamily = expoArabic, textAlign = textAlign),
+        textStyle = TextStyle(fontFamily = expoArabic, textAlign = textAlign, textDirection = TextDirection.Content),
         modifier = Modifier.fillMaxWidth(),
         trailingIcon = trailingImageResource,
         leadingIcon = leadingImageResource

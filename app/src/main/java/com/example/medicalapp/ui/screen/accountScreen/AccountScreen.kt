@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.medicalapp.R
 import com.example.medicalapp.ui.compasible.BlackText
 import com.example.medicalapp.ui.compasible.DoctorInformationTextField
@@ -22,8 +23,10 @@ import com.example.medicalapp.ui.compasible.MainIcons
 import com.example.medicalapp.ui.compasible.VerticalSpacer
 
 @Composable
-fun AccountScreen(){
-
+fun AccountScreen(
+    navController: NavController
+){
+    AccountContent()
 }
 
 @Composable

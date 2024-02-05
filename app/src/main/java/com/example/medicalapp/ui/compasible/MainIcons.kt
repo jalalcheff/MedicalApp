@@ -2,6 +2,7 @@ package com.example.medicalapp.ui.compasible
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -15,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.example.medicalapp.R
 
 @Composable
-fun MainIcons(imageUrl: Int){
+fun MainIcons(imageUrl: Int, onClickICon: ()->Unit = {}){
 Card(
     shape = RoundedCornerShape(size = 8.dp),
     colors = CardDefaults.cardColors(Color(0x3DBBBBBB)),
@@ -23,7 +24,7 @@ Card(
     Image(
         painter = painterResource(id = imageUrl),
         contentDescription = "settings",
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(8.dp).clickable(onClick = onClickICon),
     )
 }
 }

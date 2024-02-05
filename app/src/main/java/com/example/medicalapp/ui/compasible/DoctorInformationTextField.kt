@@ -6,11 +6,17 @@ import androidx.compose.ui.res.painterResource
 import com.example.medicalapp.R
 
 @Composable
-fun DoctorInformationTextField(textFieldName: String, trailingImageResource: Int, leadingImageResource: Int = 0){
+fun DoctorInformationTextField(
+    textFieldName: String,
+    trailingImageResource: Int,
+    leadingImageResource: Int = 0,
+    textFieldValue: String = "",
+    onValueChange: (String)->Unit = {},
+){
     LoginTextFiled(
         labelText = textFieldName,
-        value = "",
-        onValueChange = {},
+        value = textFieldValue,
+        onValueChange = onValueChange,
         trailingImageResource = {
             Image(
                 painter = painterResource(id = trailingImageResource),

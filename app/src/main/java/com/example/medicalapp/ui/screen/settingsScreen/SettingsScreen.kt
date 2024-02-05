@@ -1,5 +1,7 @@
 package com.example.medicalapp.ui.screen.settingsScreen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +21,8 @@ import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.medicalapp.R
 import com.example.medicalapp.ui.compasible.BlackText
 import com.example.medicalapp.ui.compasible.DateRecyclerContent
@@ -27,14 +31,35 @@ import com.example.medicalapp.ui.compasible.MainIcons
 import com.example.medicalapp.ui.compasible.PatientQueryCard
 import com.example.medicalapp.ui.compasible.SettingsChoiceComponent
 import com.example.medicalapp.ui.compasible.VerticalSpacer
+import com.example.medicalapp.ui.screen.accountScreen.navigateToAccountScreen
+import com.example.medicalapp.ui.screen.doctorInformationScreen.navigateToDoctorInformationScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SettingsScreen(){
+fun SettingsScreen(
+    navController: NavController,
+    viewModel: SettingsScreenViewModel = hiltViewModel(),
+) {
 
+    SettingsContent(
+        onClickAccountSettings = {
+            navController.navigateToAccountScreen(viewModel.getUid())
+        },
+        onClickDoctorInformation = {
+            navController.navigateToDoctorInformationScreen(viewModel.getUid())
+        },
+        onClickLogout = {
+
+        }
+    )
 }
 
 @Composable
-fun SettingsContent(){
+fun SettingsContent(
+    onClickDoctorInformation: () -> Unit,
+    onClickAccountSettings: () -> Unit,
+    onClickLogout: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .background(Color(0xFFF9F9F9))
@@ -44,26 +69,38 @@ fun SettingsContent(){
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Box{}
+            Box {}
             BlackText(text = "الأعدادات", size = 18)
             MainIcons(imageUrl = R.drawable.back_svgrepo_com__1_)
         }
         VerticalSpacer(space = 24)
-        SettingsChoiceComponent(settingChoiceText = "بيانات الطبيب", settingChoiceImage = R.drawable.doctor_information)
+        SettingsChoiceComponent(
+            settingChoiceText = "بيانات الطبيب",
+            settingChoiceImage = R.drawable.doctor_information,
+            onSettingsChoiceClick = onClickDoctorInformation
+        )
         VerticalSpacer(space = 4)
         Image(
             painter = painterResource(id = R.drawable.line),
             contentDescription = "line",
             modifier = Modifier.fillMaxWidth()
         )
-        SettingsChoiceComponent(settingChoiceText = "اعدادات الحساب", settingChoiceImage = R.drawable.settings)
+        SettingsChoiceComponent(
+            settingChoiceText = "اعدادات الحساب",
+            settingChoiceImage = R.drawable.settings,
+            onSettingsChoiceClick = onClickAccountSettings
+        )
         VerticalSpacer(space = 24)
-        SettingsChoiceComponent(settingChoiceText = "تسجيل خروج", settingChoiceImage = R.drawable.log_out)
+        SettingsChoiceComponent(
+            settingChoiceText = "تسجيل خروج",
+            settingChoiceImage = R.drawable.log_out,
+            onSettingsChoiceClick = onClickLogout
+        )
     }
 }
 
 @Preview
 @Composable
-fun PreviewSettingsScreen(){
-    SettingsContent()
+fun PreviewSettingsScreen() {
+    SettingsContent({}, {}, {})
 }

@@ -41,6 +41,7 @@ import com.example.medicalapp.ui.compasible.VerticalSpacer
 import com.example.medicalapp.ui.screen.MainScreen.MainScreenUiState
 import com.example.medicalapp.ui.screen.MainScreen.MainScreenViewModel
 import com.example.medicalapp.ui.screen.addPatientScreen.navigateToAddPatientScreen
+import com.example.medicalapp.ui.screen.settingsScreen.navigateToSettingsScreen
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -58,6 +59,9 @@ fun MainScreen(
         },
         onClickCard = {
             coroutine.launch { viewModel.updateCardState(it) }
+        },
+        onClickSettingsIcon = {
+            navController.navigateToSettingsScreen(state.uid)
         }
     )
 }
@@ -67,6 +71,7 @@ fun MainContent(
     state: MainScreenUiState,
     onClickAddPatient: () -> Unit,
     onClickCard: (index: Int) -> Unit,
+    onClickSettingsIcon: () -> Unit
 ) {
     Log.i("compasible", "days are ${state.nextSevenDays}")
     if (state.isLoading)
@@ -84,7 +89,7 @@ fun MainContent(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row() {
-                    MainIcons(imageUrl = R.drawable.setting_2_svgrepo_com)
+                    MainIcons(imageUrl = R.drawable.setting_2_svgrepo_com, onClickICon = onClickSettingsIcon)
                     HorizontalSpacer(space = 8)
                     MainIcons(imageUrl = R.drawable.notification_svgrepo_com)
                 }

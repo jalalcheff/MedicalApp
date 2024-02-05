@@ -1,6 +1,7 @@
 package com.example.medicalapp.ui.compasible
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,10 +18,11 @@ import com.example.medicalapp.R
 @Composable
 fun SettingsChoiceComponent(
     settingChoiceText: String,
-    settingChoiceImage:Int
+    settingChoiceImage:Int,
+    onSettingsChoiceClick: () -> Unit = {}
 ){
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onSettingsChoiceClick),
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {
