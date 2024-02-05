@@ -33,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.medicalapp.R
 import com.example.medicalapp.ui.compasible.BlackText
+import com.example.medicalapp.ui.compasible.ClincTimeTextfield
 import com.example.medicalapp.ui.compasible.DoctorInformationTextField
 import com.example.medicalapp.ui.compasible.EditedProfileImage
 import com.example.medicalapp.ui.compasible.GeneralButton
@@ -55,17 +56,17 @@ fun DoctorInformationScreen(
     val state by viewModel.informationScreenData.collectAsState()
     DoctorInformationContent(
         state
-    ) { doctorName, doctorField, doctorStartTime ->
+    ) { doctorName, doctorField, doctorStartTime, doctorEndTime ->
         coroutineScope.launch {
-        viewModel.updateAccountInformation(
-            doctorName = doctorName,
-            fieldName = doctorField,
-            startExistenceTime = doctorStartTime,
-            clincUid = state.clincUid,
-            endExistenceTime = state.doctorEndTime
-        )
+            viewModel.updateAccountInformation(
+                doctorName = doctorName,
+                fieldName = doctorField,
+                startExistenceTime = doctorStartTime,
+                clincUid = state.clincUid,
+                endExistenceTime = doctorEndTime
+            )
             navController.navigateToMainScreen(state.clincUid, true)
-           // navController.popBackStack(route = "MainScreen/${state.clincUid}", inclusive = false)
+            // navController.popBackStack(route = "MainScreen/${state.clincUid}", inclusive = false)
         }
     }
 }
@@ -73,9 +74,9 @@ fun DoctorInformationScreen(
 @Composable
 fun DoctorInformationContent(
     state: DoctorInformationUiState,
-    onClickEdit: (String, String, String) -> Unit,
+    onClickEdit: (String, String, String, String) -> Unit,
 ) {
-    if (!state.isLoading) {
+    if (state.isLoading) {
         HomeLoadingLines()
     } else {
         var doctorName by remember {
@@ -129,27 +130,16 @@ fun DoctorInformationContent(
                     }
                 )
                 VerticalSpacer(space = 16)
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-
-                    DoctorInformationTextField(
-                        textFieldName = "الى الساعة",
-                        trailingImageResource = R.drawable.working_time,
-                        textFieldValue = doctorEndTime,
-                        onValueChange = {
-                            doctorEndTime = it
-                        }
-                    )
-                    DoctorInformationTextField(
-                        textFieldName = "من الساعة",
-                        trailingImageResource = R.drawable.working_time,
-                        textFieldValue = doctorStartTime,
-                        onValueChange = {
-                            doctorStartTime = it
-                        }
-                    )
-                }
+                ClincTimeTextfield(
+                    doctorEndTime = doctorEndTime,
+                    doctorStartTime = doctorStartTime,
+                    onClickStartTime = {
+                        doctorStartTime = it
+                    },
+                    onClickEndTime = {
+                        doctorEndTime = it
+                    }
+                )
                 VerticalSpacer(space = 16)
                 DoctorInformationTextField(
                     textFieldName = "ايام العمل",
@@ -160,7 +150,7 @@ fun DoctorInformationContent(
 
             GeneralButton(
                 text = "تعديل",
-                onClickButton = { onClickEdit(doctorName, doctorField, doctorStartTime) }
+                onClickButton = { onClickEdit(doctorName, doctorField, doctorStartTime, doctorEndTime) }
             )
         }
     }
@@ -171,6 +161,7 @@ fun DoctorInformationContent(
 fun PreviewDoctorInformationContent() {
     DoctorInformationContent(state = DoctorInformationUiState(), onClickEdit = ::get)
 }
-fun get (name: String = "", age: String = "", data: String = ""): Unit{
+
+fun get(name: String = "", age: String = "", data: String = "", dd: String = ""): Unit {
 
 }
