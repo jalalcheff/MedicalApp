@@ -2,6 +2,8 @@ package com.example.medicalapp.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.medicalapp.local.SharedPreferenceImp
+import com.example.medicalapp.repository.SharedPreferenceService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +14,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object SharedPreferenceModule {
-/*
     @Provides
     @Singleton
     fun provideFoodSharedPreference(@ApplicationContext context: Context): SharedPreferences =
@@ -21,7 +22,7 @@ object SharedPreferenceModule {
 
     @Provides
     @Singleton
-    fun provideSharedPrefService(sharedPreferenceImpl: SharedPreferenceImpl): SharedPreferenceService {
+    fun provideSharedPrefService(sharedPreferenceImpl: SharedPreferenceImp): SharedPreferenceService {
         return sharedPreferenceImpl
-    }*/
+    }
 }
