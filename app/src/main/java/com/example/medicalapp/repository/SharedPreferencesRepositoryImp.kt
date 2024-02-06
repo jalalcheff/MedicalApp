@@ -11,4 +11,20 @@ class SharedPreferencesRepositoryImp @Inject constructor(private val sharedPrefe
     override fun savePassword(password: String) {
         sharedPreferenceService.savePassword(password)
     }
+
+    override fun saveUid(uid: String) {
+        sharedPreferenceService.saveUid(uid)
+    }
+
+    override fun getUserName(): String {
+        return sharedPreferenceService.getUserName()
+    }
+
+    override fun getPassword(): String {
+        return sharedPreferenceService.getPassword()
+    }
+
+    override fun getUid(): String {
+        return sharedPreferenceService.getUid()
+    }
 }

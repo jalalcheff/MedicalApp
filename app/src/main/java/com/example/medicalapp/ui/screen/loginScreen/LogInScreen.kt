@@ -53,11 +53,15 @@ fun LoginScreen(
     val context = LocalContext.current.applicationContext
     val state by viewModel.userData.collectAsState()
     val coroutineScope = rememberCoroutineScope()
+    LaunchedEffect(key1 = true ){
+        viewModel.checkIfLoggedInBefore(navController = navController, context = context)
+    }
     LoginContent(
         state = state,
         onClickLogin = { email, password ->
             coroutineScope.launch {
                 if (!state.exception) {
+                    viewModel.saveAuthenticatedData(userName = email, password = password, uid = state.uid)
                     navController.navigateToMainScreen(viewModel.userData.value.uid, emptyBackStack = true)
                 }
                 viewModel.login(email = email, password = password, context = context)

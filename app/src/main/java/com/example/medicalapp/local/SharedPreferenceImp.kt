@@ -17,4 +17,22 @@ class SharedPreferenceImp @Inject constructor(private val sharedPreferences: Sha
             putString("password", password)
         }
     }
+
+    override fun saveUid(uid: String) {
+        sharedPreferences.edit{
+            putString("uid", uid)
+        }
+    }
+
+    override fun getUserName(): String {
+        return sharedPreferences.getString("name", null) ?: ""
+    }
+
+    override fun getPassword(): String {
+        return sharedPreferences.getString("password", null) ?: ""
+    }
+
+    override fun getUid(): String {
+        return sharedPreferences.getString("uid", null) ?: ""
+    }
 }

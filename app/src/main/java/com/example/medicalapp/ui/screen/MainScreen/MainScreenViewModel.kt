@@ -13,6 +13,10 @@ import com.example.medicalapp.domain.GetCurrentDateUsecase
 import com.example.medicalapp.domain.GetCurrentMonth
 import com.example.medicalapp.domain.GetCurrentSevenDays
 import com.example.medicalapp.domain.GetNumberOfPatientsUsecase
+import com.example.medicalapp.domain.GetPasswordUsecase
+import com.example.medicalapp.domain.GetUsernameUsecase
+import com.example.medicalapp.domain.SavePasswordUsecase
+import com.example.medicalapp.domain.SaveUsernameUsecase
 import com.example.medicalapp.domain.SetPatientInSpecificDateUsecase
 import com.example.medicalapp.remote.RemoteDatasourceImp
 import com.example.medicalapp.remote.resource.clincResource.PatientResource
@@ -34,7 +38,9 @@ class MainScreenViewModel @Inject constructor(
     private val getAllClincPatientsUsecase: GetAllClincPatientsUsecase,
     private val getCurrentSevenDays: GetCurrentSevenDays,
     private val getCurrentMonth: GetCurrentMonth,
-    private val getNumberOfPatientsUsecase: GetNumberOfPatientsUsecase
+    private val getNumberOfPatientsUsecase: GetNumberOfPatientsUsecase,
+    private val getUsernameUsecase: GetUsernameUsecase,
+    private val getPasswordUsecase: GetPasswordUsecase
 ) : ViewModel() {
     private val uid = MainScreenArgs(savedStateHandle).name
     private val _mainScreenData = MutableStateFlow(MainScreenUiState())
@@ -43,6 +49,7 @@ class MainScreenViewModel @Inject constructor(
     init {
         Log.i("jalal", "the passed uid is $uid")
         Log.i("jalal", "seven days are : ${getCurrentSevenDays.getCurrentSevenDay()} and ${1 % 7}")
+        Log.i("jalal", "email is ${getUsernameUsecase.getUsernameUsecase()} and password is ${getPasswordUsecase.getPasswordUsecase()}")
         viewModelScope.launch {
             fetchClincDetails(clincUid = uid.toString())
             fetchCurrentDate()

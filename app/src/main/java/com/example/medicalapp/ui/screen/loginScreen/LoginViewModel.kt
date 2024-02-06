@@ -5,17 +5,18 @@ import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import com.example.medicalapp.domain.GetCurrentSevenDays
-import com.example.medicalapp.domain.GetNextSevenDaysUsecase
+import com.example.medicalapp.domain.GetPasswordUsecase
+import com.example.medicalapp.domain.GetUidUsecase
+import com.example.medicalapp.domain.GetUsernameUsecase
 import com.example.medicalapp.domain.LoginUsecase
-import com.google.android.gms.tasks.Tasks.await
+import com.example.medicalapp.domain.SavePasswordUsecase
+import com.example.medicalapp.domain.SaveUidUsecase
+import com.example.medicalapp.domain.SaveUsernameUsecase
+import com.example.medicalapp.ui.screen.MainScreen.navigateToMainScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -26,11 +27,28 @@ import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
     private val loginUsecase: LoginUsecase,
-    private val getCurrentSevenDays: GetCurrentSevenDays
-    ): ViewModel() {
+    private val getCurrentSevenDays: GetCurrentSevenDays,
+    private val saveUsernameUsecase: SaveUsernameUsecase,
+    private val savePasswordUsecase: SavePasswordUsecase,
+    private val getUsernameUsecase: GetUsernameUsecase,
+    private val getPasswordUsecase: GetPasswordUsecase,
+    private val saveUidUsecase: SaveUidUsecase,
+    private val getUidUsecase: GetUidUsecase
+) : ViewModel() {
     init {
         getCurrentSevenDays.getCurrentSevenDay()
     }
+
+     suspend fun checkIfLoggedInBefore(navController: NavController, context: Context) {
+        if (getUsernameUsecase.getUsernameUsecase()
+                .isNotEmpty() && getPasswordUsecase.getPasswordUsecase()
+                .isNotEmpty() && getUidUsecase.getUidUsecase().isNotEmpty()
+        ) {
+            navController.navigateToMainScreen(getUidUsecase.getUidUsecase(), emptyBackStack = true)
+            this.login(email = getUsernameUsecase.getUsernameUsecase(), password = getPasswordUsecase.getPasswordUsecase(), context = context)
+        }
+    }
+
     private val _userData = MutableStateFlow(LoginUiState())
     val userData = _userData.asStateFlow()
     suspend fun login(email: String, password: String, context: Context) {
@@ -45,14 +63,16 @@ class LoginViewModel @Inject constructor(
                     exception = false
                 )
             }
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             Toast.makeText(context, e.message.toString(), Toast.LENGTH_LONG).show()
             Log.i("loginEx", e.message.toString())
         }
 
     }
-    fun getData(){
-        _userData.value.uid
+
+    fun saveAuthenticatedData(userName: String, password: String, uid: String) {
+        saveUsernameUsecase.saveUsernameUsecase(userName)
+        savePasswordUsecase.savePasswordUsecase(password)
+        saveUidUsecase.saveUidUsecase(uid = uid)
     }
 }
