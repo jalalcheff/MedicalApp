@@ -130,16 +130,31 @@ fun DoctorInformationContent(
                     }
                 )
                 VerticalSpacer(space = 16)
-                ClincTimeTextfield(
-                    doctorEndTime = doctorEndTime,
-                    doctorStartTime = doctorStartTime,
-                    onClickStartTime = {
-                        doctorStartTime = it
-                    },
-                    onClickEndTime = {
-                        doctorEndTime = it
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Box(modifier = Modifier.weight(0.5f)) {
+                        DoctorInformationTextField(
+                            textFieldName = "الى الساعة",
+                            trailingImageResource = R.drawable.working_time,
+                            textFieldValue = doctorStartTime,
+                            onValueChange = {
+                                doctorStartTime = it
+                            }
+                        )
                     }
-                )
+                    HorizontalSpacer(space = 12)
+                    Box(modifier = Modifier.weight(0.5f)) {
+                        DoctorInformationTextField(
+                            textFieldName = "من الساعة",
+                            trailingImageResource = R.drawable.working_time,
+                            textFieldValue = doctorEndTime,
+                            onValueChange = {
+                                doctorEndTime = it
+                            }
+                        )
+                    }
+                }
                 VerticalSpacer(space = 16)
                 DoctorInformationTextField(
                     textFieldName = "ايام العمل",

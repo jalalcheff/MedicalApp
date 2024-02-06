@@ -16,6 +16,13 @@ import com.example.medicalapp.R
 
 @Composable
 fun ClincTimeTextfield(doctorEndTime: String, doctorStartTime: String, onClickStartTime: (String)->Unit, onClickEndTime: (String)->Unit) {
+    var doctorStart by remember {
+        mutableStateOf(doctorStartTime)
+    }
+    var doctorEnd by remember {
+        mutableStateOf(doctorEndTime)
+    }
+
     Row(
         modifier = Modifier.fillMaxWidth(),
     ) {
@@ -23,7 +30,7 @@ fun ClincTimeTextfield(doctorEndTime: String, doctorStartTime: String, onClickSt
             DoctorInformationTextField(
                 textFieldName = "الى الساعة",
                 trailingImageResource = R.drawable.working_time,
-                textFieldValue = doctorEndTime,
+                textFieldValue = doctorStart,
                 onValueChange = onClickStartTime
             )
         }
@@ -32,7 +39,7 @@ fun ClincTimeTextfield(doctorEndTime: String, doctorStartTime: String, onClickSt
             DoctorInformationTextField(
                 textFieldName = "من الساعة",
                 trailingImageResource = R.drawable.working_time,
-                textFieldValue = doctorStartTime,
+                textFieldValue = doctorEnd,
                 onValueChange = onClickEndTime
             )
         }
