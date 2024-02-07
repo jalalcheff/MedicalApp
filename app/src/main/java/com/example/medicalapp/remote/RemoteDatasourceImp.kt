@@ -142,7 +142,7 @@ class RemoteDatasourceImp() : RemoteDatasource {
         fieldName: String,
         startExistenceTime: String,
         endExistenceTime: String,
-        clincUid: String
+        clincUid: String,
     ) {
         val editedAccountInformation = mapOf(
             DOCTOR_NAME to doctorName,
@@ -153,11 +153,21 @@ class RemoteDatasourceImp() : RemoteDatasource {
         val db = Firebase.firestore
         db.collection("clinc").document(clincUid)
             .collection("clincDetails").document("details")
-            .set(editedAccountInformation) .addOnSuccessListener {
+            .set(editedAccountInformation).addOnSuccessListener {
                 Log.d("jalal", "DocumentSnapshot successfully written!")
             }
             .addOnFailureListener { e ->
                 throw Exception(e.message)
+            }.await()
+    }
+
+    override suspend fun deletePatient(patientDocument: String, uid: String) {
+        val db = Firebase.firestore
+        db.collection("clinc").document(uid)
+            .collection("patientQuery").document(patientDocument)
+            .delete()
+            .addOnFailureListener { throw NetworkException.NotFoundException }.addOnSuccessListener {
+                Log.i("successDelete", "variable $it : $patientDocument : $uid")
             }.await()
     }
 

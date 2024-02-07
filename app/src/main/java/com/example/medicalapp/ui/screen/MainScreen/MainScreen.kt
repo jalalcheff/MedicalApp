@@ -46,6 +46,7 @@ import com.example.medicalapp.ui.compasible.PatientQueryCard
 import com.example.medicalapp.ui.compasible.VerticalSpacer
 import com.example.medicalapp.ui.screen.MainScreen.MainScreenUiState
 import com.example.medicalapp.ui.screen.MainScreen.MainScreenViewModel
+import com.example.medicalapp.ui.screen.MainScreen.navigateToMainScreen
 import com.example.medicalapp.ui.screen.addPatientScreen.navigateToAddPatientScreen
 import com.example.medicalapp.ui.screen.settingsScreen.navigateToSettingsScreen
 import kotlinx.coroutines.launch
@@ -78,6 +79,18 @@ fun MainScreen(
         onClickSettingsIcon = {
             navController.navigateToSettingsScreen(state.uid)
             name++
+        },
+        onCheckCanceled = {
+            coroutine.launch {
+                viewModel.deletePatient(uid = state.uid, indexOfDeletedPatient = it-1)
+                navController.navigateToMainScreen(uid = state.uid, emptyBackStack = true)
+            }
+        },
+        onChecked = {
+            coroutine.launch {
+                viewModel.deletePatient(uid = state.uid, indexOfDeletedPatient = it-1)
+                navController.navigateToMainScreen(uid = state.uid, emptyBackStack = true)
+            }
         }
     )
 }
@@ -87,7 +100,9 @@ fun MainContent(
     state: MainScreenUiState,
     onClickAddPatient: () -> Unit,
     onClickCard: (index: Int) -> Unit,
-    onClickSettingsIcon: () -> Unit
+    onClickSettingsIcon: () -> Unit,
+    onChecked: (Int) -> Unit,
+    onCheckCanceled: (Int) -> Unit,
 ) {
 
     Log.i("compasible", "days are ${state.nextSevenDays}")
@@ -106,7 +121,10 @@ fun MainContent(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row() {
-                    MainIcons(imageUrl = R.drawable.setting_2_svgrepo_com, onClickICon = onClickSettingsIcon)
+                    MainIcons(
+                        imageUrl = R.drawable.setting_2_svgrepo_com,
+                        onClickICon = onClickSettingsIcon
+                    )
                     HorizontalSpacer(space = 8)
                     MainIcons(imageUrl = R.drawable.notification_svgrepo_com)
                 }
@@ -162,7 +180,9 @@ fun MainContent(
                                 PatientQueryCard(
                                     patientName = patients[it].name,
                                     query = patients[it].query,
-                                    reservationDate = patients[it].reservationDate
+                                    reservationDate = patients[it].reservationDate,
+                                    onChecked = onChecked,
+                                    onCheckCanceled = onCheckCanceled
                                 )
                             }
                         },
@@ -193,10 +213,11 @@ fun MainContent(
 @Preview(widthDp = 360, heightDp = 800)
 fun PreviewMainScreen() {
 }
+
 @Composable
 fun BackPressHandler(
     onBackPressedDispatcher: OnBackPressedDispatcher,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     val context = LocalContext.current
 

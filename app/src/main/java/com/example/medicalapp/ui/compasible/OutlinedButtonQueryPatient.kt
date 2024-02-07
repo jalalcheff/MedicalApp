@@ -15,10 +15,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun OutlinedButtonQueryPatient(modifier: Modifier = Modifier){
+fun OutlinedButtonQueryPatient(modifier: Modifier = Modifier, onCheckCancelled: (Int) -> Unit = {}, query : Int = 0){
         OutlinedButton(
             modifier = modifier,
-            onClick = { /*TODO*/ },
+            onClick = {onCheckCancelled(query)},
             shape = RoundedCornerShape(4.dp),
             border = BorderStroke(1.dp, Color(0xFF18A0FB)),
         ) {
@@ -29,5 +29,4 @@ fun OutlinedButtonQueryPatient(modifier: Modifier = Modifier){
 @Composable
 @Preview
 fun PreviewOutlinedButtonQueryPatient(){
-    OutlinedButtonQueryPatient()
 }

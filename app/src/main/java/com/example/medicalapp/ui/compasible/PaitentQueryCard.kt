@@ -20,7 +20,9 @@ import com.example.medicalapp.R
 fun PatientQueryCard(
     patientName: String,
     query: Int,
-    reservationDate: String
+    reservationDate: String,
+    onChecked: (Int) -> Unit,
+    onCheckCanceled: (Int) -> Unit
 ){
 Card(
     colors = CardDefaults.cardColors(Color(0xFFFEFEFE)),
@@ -49,8 +51,8 @@ Card(
         Row(
             modifier = Modifier.fillMaxWidth(),
         ) {
-            OutlinedButtonQueryPatient(Modifier.weight(1f).padding(end = 8.dp))
-            ButtonQueryPatient(Modifier.weight(1f))
+            OutlinedButtonQueryPatient(Modifier.weight(1f).padding(end = 8.dp), onCheckCancelled = onCheckCanceled, query = query)
+            ButtonQueryPatient(Modifier.weight(1f), onChecked = onChecked, query = query)
         }
     }
 }
@@ -59,5 +61,5 @@ Card(
 @Composable
 @Preview (widthDp = 360, heightDp = 800)
 fun PreviewPatientQuery(){
-    PatientQueryCard("",0,"")
+    PatientQueryCard("",0,"", {},{})
 }

@@ -8,12 +8,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medicalapp.domain.ClincDetailsUsecase
 import com.example.medicalapp.domain.CurrentDateInstance
+import com.example.medicalapp.domain.DeletePatientUsecase
 import com.example.medicalapp.domain.GetAllClincPatientsUsecase
 import com.example.medicalapp.domain.GetCurrentDateUsecase
 import com.example.medicalapp.domain.GetCurrentMonth
 import com.example.medicalapp.domain.GetCurrentSevenDays
 import com.example.medicalapp.domain.GetNumberOfPatientsUsecase
 import com.example.medicalapp.domain.GetPasswordUsecase
+import com.example.medicalapp.domain.GetUidUsecase
 import com.example.medicalapp.domain.GetUsernameUsecase
 import com.example.medicalapp.domain.SavePasswordUsecase
 import com.example.medicalapp.domain.SaveUsernameUsecase
@@ -40,7 +42,9 @@ class MainScreenViewModel @Inject constructor(
     private val getCurrentMonth: GetCurrentMonth,
     private val getNumberOfPatientsUsecase: GetNumberOfPatientsUsecase,
     private val getUsernameUsecase: GetUsernameUsecase,
-    private val getPasswordUsecase: GetPasswordUsecase
+    private val getPasswordUsecase: GetPasswordUsecase,
+    private val getUidUsecase: GetUidUsecase,
+    private val deletePatientUsecase: DeletePatientUsecase
 ) : ViewModel() {
     private val uid = MainScreenArgs(savedStateHandle).name
     private val _mainScreenData = MutableStateFlow(MainScreenUiState())
@@ -126,5 +130,11 @@ class MainScreenViewModel @Inject constructor(
     }
     fun updateLoadingState(){
         _mainScreenData.update { it.copy(isLoading = true) }
+    }
+    suspend fun deletePatient(indexOfDeletedPatient: Int, uid: String){
+        val deletedPatientDocument = _mainScreenData.value.patients[indexOfDeletedPatient].reservationDate
+        val clincUid = getUidUsecase.getUidUsecase()
+        Log.i("deletePatient", "document: $deletedPatientDocument and index : $indexOfDeletedPatient and uid: $clincUid")
+        deletePatientUsecase.deletePatientUsecase(patientDocument = deletedPatientDocument, uid = clincUid)
     }
 }

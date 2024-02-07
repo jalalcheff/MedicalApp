@@ -60,9 +60,6 @@ fun SettingsScreen(
         onClickLogout = {
             viewModel.clearAuthenticatedData()
             navController.navigateToLoginScreen(emptyBackStack = true)
-        },
-        onClickCancelLogout = {
-
         }
     )
 }
@@ -72,13 +69,12 @@ fun SettingsContent(
     onClickDoctorInformation: () -> Unit,
     onClickAccountSettings: () -> Unit,
     onClickLogout: () -> Unit,
-    onClickCancelLogout: () -> Unit,
 ) {
     var loginDialogStatus by remember {
         mutableStateOf(false)
     }
     if (loginDialogStatus)
-        LogoutLayerOnLayer(onClickLogout = onClickLogout, onClickCancelLogout = onClickCancelLogout)
+        LogoutLayerOnLayer(onClickLogout = onClickLogout, onClickCancelLogout = {loginDialogStatus = false})
     else {
         Column(
             modifier = Modifier
@@ -126,5 +122,5 @@ fun SettingsContent(
 @Preview
 @Composable
 fun PreviewSettingsScreen() {
-    SettingsContent({}, {}, {}, {})
+    SettingsContent({}, {}, {})
 }

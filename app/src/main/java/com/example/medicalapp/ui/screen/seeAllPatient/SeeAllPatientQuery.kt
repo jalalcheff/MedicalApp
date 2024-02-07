@@ -61,7 +61,7 @@ fun SeeAllPatientQueryContent() {
                 content = {
                     items(10) {
                         for (i in 0..10) {
-                            PatientQueryCard("",0,"")
+                           // PatientQueryCard("",0,"")
                         }
                     }
                 },

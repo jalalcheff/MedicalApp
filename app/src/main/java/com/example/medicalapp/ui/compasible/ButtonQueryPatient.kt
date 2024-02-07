@@ -15,9 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ButtonQueryPatient(modifier: Modifier = Modifier){
+fun ButtonQueryPatient(modifier: Modifier = Modifier, onChecked: (Int) -> Unit, query: Int = 0){
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {onChecked(query)},
             shape = RoundedCornerShape(4.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFF18A0FB)),
             modifier = modifier
@@ -29,5 +29,4 @@ fun ButtonQueryPatient(modifier: Modifier = Modifier){
 @Composable
 @Preview
 fun PreviewButtonQueryPatient(){
-    ButtonQueryPatient()
 }
