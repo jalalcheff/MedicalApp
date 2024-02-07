@@ -14,6 +14,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +32,8 @@ import com.example.medicalapp.R
 import com.example.medicalapp.ui.compasible.BlackText
 import com.example.medicalapp.ui.compasible.DateRecyclerContent
 import com.example.medicalapp.ui.compasible.HorizontalSpacer
+import com.example.medicalapp.ui.compasible.LogOutDialog
+import com.example.medicalapp.ui.compasible.LogoutLayerOnLayer
 import com.example.medicalapp.ui.compasible.MainIcons
 import com.example.medicalapp.ui.compasible.PatientQueryCard
 import com.example.medicalapp.ui.compasible.SettingsChoiceComponent
@@ -47,9 +54,6 @@ fun SettingsScreen(
         },
         onClickDoctorInformation = {
             navController.navigateToDoctorInformationScreen(viewModel.getUid())
-        },
-        onClickLogout = {
-
         }
     )
 }
@@ -58,49 +62,58 @@ fun SettingsScreen(
 fun SettingsContent(
     onClickDoctorInformation: () -> Unit,
     onClickAccountSettings: () -> Unit,
-    onClickLogout: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .background(Color(0xFFF9F9F9))
-            .padding(horizontal = 16.dp, vertical = 24.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth(),
+    var loginDialogStatus by remember {
+        mutableStateOf(false)
+    }
+    if (loginDialogStatus)
+        LogoutLayerOnLayer()
+    else {
+        Column(
+            modifier = Modifier
+                .background(Color(0xFFF9F9F9))
+                .padding(horizontal = 16.dp, vertical = 24.dp)
         ) {
-            Box {}
-            BlackText(text = "الأعدادات", size = 18)
-            MainIcons(imageUrl = R.drawable.back_svgrepo_com__1_)
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Box {}
+                BlackText(text = "الأعدادات", size = 18)
+                MainIcons(imageUrl = R.drawable.back_svgrepo_com__1_)
+            }
+            VerticalSpacer(space = 24)
+            SettingsChoiceComponent(
+                settingChoiceText = "بيانات الطبيب",
+                settingChoiceImage = R.drawable.doctor_information,
+                onSettingsChoiceClick = onClickDoctorInformation
+            )
+            VerticalSpacer(space = 4)
+            Image(
+                painter = painterResource(id = R.drawable.line),
+                contentDescription = "line",
+                modifier = Modifier.fillMaxWidth()
+            )
+            SettingsChoiceComponent(
+                settingChoiceText = "اعدادات الحساب",
+                settingChoiceImage = R.drawable.settings,
+                onSettingsChoiceClick = onClickAccountSettings
+            )
+            VerticalSpacer(space = 24)
+            SettingsChoiceComponent(
+                settingChoiceText = "تسجيل خروج",
+                settingChoiceImage = R.drawable.log_out,
+                onSettingsChoiceClick = {
+                    loginDialogStatus = true
+                }
+            )
+
         }
-        VerticalSpacer(space = 24)
-        SettingsChoiceComponent(
-            settingChoiceText = "بيانات الطبيب",
-            settingChoiceImage = R.drawable.doctor_information,
-            onSettingsChoiceClick = onClickDoctorInformation
-        )
-        VerticalSpacer(space = 4)
-        Image(
-            painter = painterResource(id = R.drawable.line),
-            contentDescription = "line",
-            modifier = Modifier.fillMaxWidth()
-        )
-        SettingsChoiceComponent(
-            settingChoiceText = "اعدادات الحساب",
-            settingChoiceImage = R.drawable.settings,
-            onSettingsChoiceClick = onClickAccountSettings
-        )
-        VerticalSpacer(space = 24)
-        SettingsChoiceComponent(
-            settingChoiceText = "تسجيل خروج",
-            settingChoiceImage = R.drawable.log_out,
-            onSettingsChoiceClick = onClickLogout
-        )
     }
 }
 
 @Preview
 @Composable
 fun PreviewSettingsScreen() {
-    SettingsContent({}, {}, {})
+    SettingsContent({}, {})
 }
