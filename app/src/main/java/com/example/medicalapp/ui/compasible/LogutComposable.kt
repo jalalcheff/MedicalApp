@@ -26,13 +26,12 @@ import androidx.compose.ui.zIndex
 import com.example.medicalapp.R
 
 @Composable
-fun LogoutComposable() {
- /*   Box(
-        modifier = Modifier.zIndex(1f),
-        contentAlignment = Alignment.Center
-    ) {
-        LogOutDialog()
-    }*/
+fun LogoutComposable() {/*   Box(
+           modifier = Modifier.zIndex(1f),
+           contentAlignment = Alignment.Center
+       ) {
+           LogOutDialog()
+       }*/
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -53,39 +52,35 @@ fun LogoutComposable() {
             MainIcons(imageUrl = R.drawable.back_svgrepo_com__1_)
         }
         VerticalSpacer(space = 24)
-        SettingsChoiceComponent(
-            settingChoiceText = "بيانات الطبيب",
+        SettingsChoiceComponent(settingChoiceText = "بيانات الطبيب",
             settingChoiceImage = R.drawable.doctor_information,
-            onSettingsChoiceClick = {}
-        )
+            onSettingsChoiceClick = {})
         VerticalSpacer(space = 4)
         Image(
             painter = painterResource(id = R.drawable.line),
             contentDescription = "line",
             modifier = Modifier.fillMaxWidth()
         )
-        SettingsChoiceComponent(
-            settingChoiceText = "اعدادات الحساب",
+        SettingsChoiceComponent(settingChoiceText = "اعدادات الحساب",
             settingChoiceImage = R.drawable.settings,
-            onSettingsChoiceClick = {}
-        )
+            onSettingsChoiceClick = {})
         VerticalSpacer(space = 24)
-        SettingsChoiceComponent(
-            settingChoiceText = "تسجيل خروج",
+        SettingsChoiceComponent(settingChoiceText = "تسجيل خروج",
             settingChoiceImage = R.drawable.log_out,
-            onSettingsChoiceClick = {}
-        )
+            onSettingsChoiceClick = {})
     }
 }
+
 @Composable
-fun LogoutLayerOnLayer(){
+fun LogoutLayerOnLayer(onClickLogout: () -> Unit, onClickCancelLogout: () -> Unit) {
     Box(
-        modifier = Modifier.zIndex(1f).fillMaxSize(),
-        contentAlignment = Alignment.Center
-        ) {
-        LogOutDialog()
+        modifier = Modifier
+            .zIndex(1f)
+            .fillMaxSize(), contentAlignment = Alignment.Center
+    ) {
+        LogOutDialog(onClickLogout = onClickLogout, onClickCancelLogout = onClickCancelLogout)
     }
-    Box(modifier = Modifier.fillMaxSize()){
+    Box(modifier = Modifier.fillMaxSize()) {
         LogoutComposable()
     }
 
@@ -94,5 +89,5 @@ fun LogoutLayerOnLayer(){
 @Composable
 @Preview(widthDp = 360, heightDp = 800)
 fun PreviewLogoutComposable() {
-    LogoutLayerOnLayer()
+    LogoutLayerOnLayer({},{})
 }

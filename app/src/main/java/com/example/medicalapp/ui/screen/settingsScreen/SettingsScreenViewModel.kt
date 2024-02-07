@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.medicalapp.domain.ClearAuthenticatedDataUsecase
 import com.example.medicalapp.domain.ClincDetailsUsecase
 import com.example.medicalapp.domain.CurrentDateInstance
 import com.example.medicalapp.domain.GetAllClincPatientsUsecase
@@ -14,8 +15,10 @@ import com.example.medicalapp.domain.GetCurrentMonth
 import com.example.medicalapp.domain.GetCurrentSevenDays
 import com.example.medicalapp.domain.GetNumberOfPatientsUsecase
 import com.example.medicalapp.domain.SetPatientInSpecificDateUsecase
+import com.example.medicalapp.domain.SharedPreferencesRepository
 import com.example.medicalapp.remote.RemoteDatasourceImp
 import com.example.medicalapp.remote.resource.clincResource.PatientResource
+import com.example.medicalapp.repository.SharedPreferenceService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,7 +37,9 @@ class SettingsScreenViewModel @Inject constructor(
     private val getAllClincPatientsUsecase: GetAllClincPatientsUsecase,
     private val getCurrentSevenDays: GetCurrentSevenDays,
     private val getCurrentMonth: GetCurrentMonth,
-    private val getNumberOfPatientsUsecase: GetNumberOfPatientsUsecase
+    private val getNumberOfPatientsUsecase: GetNumberOfPatientsUsecase,
+    private val clearAuthenticatedDataUsecase: ClearAuthenticatedDataUsecase,
+
 ) : ViewModel() {
     private val uid = SettingsScreenArgs(savedStateHandle).name
 
@@ -46,5 +51,8 @@ class SettingsScreenViewModel @Inject constructor(
     }
     fun getUid(): String{
         return uid.toString()
+    }
+    fun clearAuthenticatedData(){
+        clearAuthenticatedDataUsecase.clearAuthenticatedDataUsecase()
     }
 }

@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LogOutDialog(){
+fun LogOutDialog(onClickLogout: () -> Unit, onClickCancelLogout: () -> Unit){
     Card(colors = CardDefaults.cardColors(Color.White)) {
         Column(
             modifier = Modifier
@@ -27,10 +27,9 @@ fun LogOutDialog(){
             BlackText(text = "هل أنت متأكد أنك تريد تسجيل الخروج؟", size = 14)
             VerticalSpacer(space = 32)
             Row {
-                OutlinedButtonLogOut(text = "اللغاء")
+                OutlinedButtonLogOut(text = "اللغاء", onClickCancelLogout = onClickCancelLogout)
                 HorizontalSpacer(space = 12)
-                LogOutButton(text = "تسحيل خروح") {
-                }
+                LogOutButton(text = "تسحيل خروح", onClickButton = onClickLogout)
             }
         }
     }
@@ -39,5 +38,5 @@ fun LogOutDialog(){
 @Composable
 @Preview
 fun PreviewLogOutDialog(){
-    LogOutDialog()
+    LogOutDialog({},{})
 }

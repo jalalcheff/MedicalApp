@@ -45,4 +45,10 @@ class SharedPreferenceImp @Inject constructor(private val sharedPreferences: Sha
     override fun isAuthenticated(): Boolean {
         return sharedPreferences.getBoolean("isAuthenticated", false)
     }
+
+    override fun clearAuthenticatedData() {
+        sharedPreferences.edit {
+            clear()
+        }
+    }
 }

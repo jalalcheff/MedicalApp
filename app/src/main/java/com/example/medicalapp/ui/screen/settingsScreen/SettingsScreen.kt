@@ -38,8 +38,10 @@ import com.example.medicalapp.ui.compasible.MainIcons
 import com.example.medicalapp.ui.compasible.PatientQueryCard
 import com.example.medicalapp.ui.compasible.SettingsChoiceComponent
 import com.example.medicalapp.ui.compasible.VerticalSpacer
+import com.example.medicalapp.ui.screen.MainScreen.navigateToMainScreen
 import com.example.medicalapp.ui.screen.accountScreen.navigateToAccountScreen
 import com.example.medicalapp.ui.screen.doctorInformationScreen.navigateToDoctorInformationScreen
+import com.example.medicalapp.ui.screen.loginScreen.navigateToLoginScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -54,6 +56,13 @@ fun SettingsScreen(
         },
         onClickDoctorInformation = {
             navController.navigateToDoctorInformationScreen(viewModel.getUid())
+        },
+        onClickLogout = {
+            viewModel.clearAuthenticatedData()
+            navController.navigateToLoginScreen(emptyBackStack = true)
+        },
+        onClickCancelLogout = {
+
         }
     )
 }
@@ -62,12 +71,14 @@ fun SettingsScreen(
 fun SettingsContent(
     onClickDoctorInformation: () -> Unit,
     onClickAccountSettings: () -> Unit,
+    onClickLogout: () -> Unit,
+    onClickCancelLogout: () -> Unit,
 ) {
     var loginDialogStatus by remember {
         mutableStateOf(false)
     }
     if (loginDialogStatus)
-        LogoutLayerOnLayer()
+        LogoutLayerOnLayer(onClickLogout = onClickLogout, onClickCancelLogout = onClickCancelLogout)
     else {
         Column(
             modifier = Modifier
@@ -115,5 +126,5 @@ fun SettingsContent(
 @Preview
 @Composable
 fun PreviewSettingsScreen() {
-    SettingsContent({}, {})
+    SettingsContent({}, {}, {}, {})
 }

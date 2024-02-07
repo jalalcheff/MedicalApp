@@ -9,7 +9,5 @@ interface SharedPreferenceService {
     fun getPassword(): String
     fun getUid(): String
     fun isAuthenticated(): Boolean
-
-
-
+    fun clearAuthenticatedData()
 }

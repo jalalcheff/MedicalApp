@@ -16,10 +16,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun OutlinedButtonLogOut(modifier: Modifier = Modifier, text: String){
+fun OutlinedButtonLogOut(modifier: Modifier = Modifier, text: String,onClickCancelLogout: () -> Unit = {}){
         OutlinedButton(
             modifier = modifier,
-            onClick = { /*TODO*/ },
+            onClick = onClickCancelLogout,
             shape = RoundedCornerShape(4.dp),
             border = BorderStroke(1.dp, Color(0x4D000000)),
             contentPadding = PaddingValues(vertical = 11.dp, horizontal = 46.dp)
@@ -31,5 +31,4 @@ fun OutlinedButtonLogOut(modifier: Modifier = Modifier, text: String){
 @Composable
 @Preview
 fun PreviewOutlinedButtonLogOut(){
-    OutlinedButtonLogOut(text = "")
 }

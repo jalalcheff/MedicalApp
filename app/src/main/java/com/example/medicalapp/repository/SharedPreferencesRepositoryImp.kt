@@ -35,4 +35,8 @@ class SharedPreferencesRepositoryImp @Inject constructor(private val sharedPrefe
     override fun isAuthenticated(): Boolean {
         return sharedPreferenceService.isAuthenticated()
     }
+
+    override fun clearAuthenticatedData() {
+        sharedPreferenceService.clearAuthenticatedData()
+    }
 }
