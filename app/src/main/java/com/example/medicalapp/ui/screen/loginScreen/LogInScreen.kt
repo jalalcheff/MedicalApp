@@ -36,6 +36,7 @@ import androidx.navigation.NavController
 import com.example.medicalapp.R
 import com.example.medicalapp.remote.RemoteDatasourceImp
 import com.example.medicalapp.repository.RemoteDatasource
+import com.example.medicalapp.ui.compasible.LoadingState
 import com.example.medicalapp.ui.compasible.LoginBottomSheet
 import com.example.medicalapp.ui.screen.MainScreen.navigateToMainScreen
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -53,22 +54,37 @@ fun LoginScreen(
     val context = LocalContext.current.applicationContext
     val state by viewModel.userData.collectAsState()
     val coroutineScope = rememberCoroutineScope()
-    LaunchedEffect(key1 = true ){
+    /* LaunchedEffect(key1 = true ){
         viewModel.checkIfLoggedInBefore(navController = navController, context = context)
-    }
-    LoginContent(
-        state = state,
-        onClickLogin = { email, password ->
-            coroutineScope.launch {
-                if (!state.exception) {
-                    viewModel.saveAuthenticatedData(userName = email, password = password, uid = state.uid)
-                    navController.navigateToMainScreen(viewModel.userData.value.uid, emptyBackStack = true)
+    }*/
+    if (!viewModel.isAuthenticated()) {
+        LoginContent(
+            state = state,
+            onClickLogin = { email, password ->
+                coroutineScope.launch {
+                    if (!state.exception) {
+                        viewModel.saveAuthenticatedData(
+                            userName = email,
+                            password = password,
+                            uid = state.uid
+                        )
+                        navController.navigateToMainScreen(
+                            viewModel.userData.value.uid,
+                            emptyBackStack = true
+                        )
+                    }
+                    viewModel.login(email = email, password = password, context = context)
                 }
-                viewModel.login(email = email, password = password, context = context)
             }
-        }
 
-    )
+        )
+    }
+    else
+    {
+        LaunchedEffect(key1 = true ){
+            viewModel.checkIfLoggedInBefore(navController = navController, context = context)
+        }
+    }
 
 }
 

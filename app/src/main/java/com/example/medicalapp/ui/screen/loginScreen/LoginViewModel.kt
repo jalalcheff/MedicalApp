@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.medicalapp.domain.GetAuthenticatedStatusUsecase
 import com.example.medicalapp.domain.GetCurrentSevenDays
 import com.example.medicalapp.domain.GetPasswordUsecase
 import com.example.medicalapp.domain.GetUidUsecase
@@ -15,6 +16,7 @@ import com.example.medicalapp.domain.LoginUsecase
 import com.example.medicalapp.domain.SavePasswordUsecase
 import com.example.medicalapp.domain.SaveUidUsecase
 import com.example.medicalapp.domain.SaveUsernameUsecase
+import com.example.medicalapp.domain.SetAuthenticatedStatusUsecase
 import com.example.medicalapp.ui.screen.MainScreen.navigateToMainScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,10 +35,15 @@ class LoginViewModel @Inject constructor(
     private val getUsernameUsecase: GetUsernameUsecase,
     private val getPasswordUsecase: GetPasswordUsecase,
     private val saveUidUsecase: SaveUidUsecase,
-    private val getUidUsecase: GetUidUsecase
+    private val getUidUsecase: GetUidUsecase,
+    private val setAuthenticatedStatusUsecase: SetAuthenticatedStatusUsecase,
+    private val getAuthenticatedStatusUsecase: GetAuthenticatedStatusUsecase
 ) : ViewModel() {
     init {
         getCurrentSevenDays.getCurrentSevenDay()
+    }
+    fun isAuthenticated(): Boolean{
+        return getAuthenticatedStatusUsecase.getAuthenticatedStatusUsecase()
     }
 
      suspend fun checkIfLoggedInBefore(navController: NavController, context: Context) {
@@ -74,5 +81,6 @@ class LoginViewModel @Inject constructor(
         saveUsernameUsecase.saveUsernameUsecase(userName)
         savePasswordUsecase.savePasswordUsecase(password)
         saveUidUsecase.saveUidUsecase(uid = uid)
+        setAuthenticatedStatusUsecase.setAuthenticatedStatusUsecase(isAuthenticate = true)
     }
 }

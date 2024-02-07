@@ -16,6 +16,10 @@ class SharedPreferencesRepositoryImp @Inject constructor(private val sharedPrefe
         sharedPreferenceService.saveUid(uid)
     }
 
+    override fun setAuthenticatedStatus(isAuthenticate: Boolean) {
+        sharedPreferenceService.setAuthenticatedStatus(isAuthenticate)
+    }
+
     override fun getUserName(): String {
         return sharedPreferenceService.getUserName()
     }
@@ -26,5 +30,9 @@ class SharedPreferencesRepositoryImp @Inject constructor(private val sharedPrefe
 
     override fun getUid(): String {
         return sharedPreferenceService.getUid()
+    }
+
+    override fun isAuthenticated(): Boolean {
+        return sharedPreferenceService.isAuthenticated()
     }
 }

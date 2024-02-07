@@ -24,6 +24,12 @@ class SharedPreferenceImp @Inject constructor(private val sharedPreferences: Sha
         }
     }
 
+    override fun setAuthenticatedStatus(isAuthenticate: Boolean) {
+        sharedPreferences.edit{
+            putBoolean("isAuthenticated", isAuthenticate)
+        }
+    }
+
     override fun getUserName(): String {
         return sharedPreferences.getString("name", null) ?: ""
     }
@@ -34,5 +40,9 @@ class SharedPreferenceImp @Inject constructor(private val sharedPreferences: Sha
 
     override fun getUid(): String {
         return sharedPreferences.getString("uid", null) ?: ""
+    }
+
+    override fun isAuthenticated(): Boolean {
+        return sharedPreferences.getBoolean("isAuthenticated", false)
     }
 }
