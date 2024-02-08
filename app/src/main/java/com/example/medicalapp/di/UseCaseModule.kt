@@ -2,6 +2,7 @@ package com.example.medicalapp.di
 
 import com.example.medicalapp.domain.ClincDetailsRepository
 import com.example.medicalapp.domain.ClincPatientsRepository
+import com.example.medicalapp.domain.ConvertTextIntoRtlUsecase
 import com.example.medicalapp.domain.GetAllClincPatientsUsecase
 import com.example.medicalapp.domain.GetCurrentDateUsecase
 import com.example.medicalapp.domain.GetCurrentMonth
@@ -33,4 +34,9 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideUpdateInformationAccountUsecase(clincDetailsRepository: ClincDetailsRepository): UpdateClincDetailsUsecase = UpdateClincDetailsUsecase(clincDetailsRepository)
+    @Provides
+    @Singleton
+    fun provideConvertTextIntoRtlUsecase(): ConvertTextIntoRtlUsecase = ConvertTextIntoRtlUsecase()
+
+
 }

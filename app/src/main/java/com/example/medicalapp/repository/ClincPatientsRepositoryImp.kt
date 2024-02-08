@@ -21,7 +21,7 @@ class ClincPatientsRepositoryImp @Inject constructor(private val remoteDatasourc
         return remoteDatasource.getNumberOfPatientsInSepcificDate(uid, date)
     }
 
-    override suspend fun deletePatient(patientDocument: String, uid: String) {
-        remoteDatasource.deletePatient(patientDocument = patientDocument, uid = uid)
+    override suspend fun deletePatient(patientDocument: String, uid: String, name: String) {
+        remoteDatasource.deletePatient(patientDocument = patientDocument, uid = uid, name = name)
     }
 }

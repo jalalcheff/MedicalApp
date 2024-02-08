@@ -161,13 +161,13 @@ class RemoteDatasourceImp() : RemoteDatasource {
             }.await()
     }
 
-    override suspend fun deletePatient(patientDocument: String, uid: String) {
+    override suspend fun deletePatient(patientDocument: String, uid: String, name: String) {
         val db = Firebase.firestore
         db.collection("clinc").document(uid)
-            .collection("patientQuery").document(patientDocument)
+            .collection("patientQuery").document(patientDocument).collection("patients").document(name)
             .delete()
             .addOnFailureListener { throw NetworkException.NotFoundException }.addOnSuccessListener {
-                Log.i("successDelete", "variable $it : $patientDocument : $uid")
+                Log.i("successDelete", "variable $it : ${patientDocument} : $uid: name : $name")
             }.await()
     }
 

@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medicalapp.domain.ClincDetailsUsecase
+import com.example.medicalapp.domain.ConvertTextIntoRtlUsecase
 import com.example.medicalapp.domain.CurrentDateInstance
 import com.example.medicalapp.domain.DeletePatientUsecase
 import com.example.medicalapp.domain.GetAllClincPatientsUsecase
@@ -44,14 +45,16 @@ class MainScreenViewModel @Inject constructor(
     private val getUsernameUsecase: GetUsernameUsecase,
     private val getPasswordUsecase: GetPasswordUsecase,
     private val getUidUsecase: GetUidUsecase,
-    private val deletePatientUsecase: DeletePatientUsecase
+    private val deletePatientUsecase: DeletePatientUsecase,
+    private val convertTextIntoRtlUsecase: ConvertTextIntoRtlUsecase
 ) : ViewModel() {
     private val uid = MainScreenArgs(savedStateHandle).name
     private val _mainScreenData = MutableStateFlow(MainScreenUiState())
     val mainScreenData = _mainScreenData.asStateFlow()
 
     init {
-        Log.i("jalal", "the passed uid is $uid")
+        val name = "08 2023 رجب"
+        Log.i("deleted", "the passed uid is ${convertTextIntoRtlUsecase.convertTextIntoRtlUsecase(name)}")
         Log.i("jalal", "seven days are : ${getCurrentSevenDays.getCurrentSevenDay()} and ${1 % 7}")
         Log.i("jalal", "email is ${getUsernameUsecase.getUsernameUsecase()} and password is ${getPasswordUsecase.getPasswordUsecase()}")
         viewModelScope.launch {
@@ -132,9 +135,10 @@ class MainScreenViewModel @Inject constructor(
         _mainScreenData.update { it.copy(isLoading = true) }
     }
     suspend fun deletePatient(indexOfDeletedPatient: Int, uid: String){
-        val deletedPatientDocument = _mainScreenData.value.patients[indexOfDeletedPatient].reservationDate
+        val deletedPatientDocument = convertTextIntoRtlUsecase.convertTextIntoRtlUsecase(_mainScreenData.value.patients[indexOfDeletedPatient].reservationDate)
         val clincUid = getUidUsecase.getUidUsecase()
-        Log.i("deletePatient", "document: $deletedPatientDocument and index : $indexOfDeletedPatient and uid: $clincUid")
-        deletePatientUsecase.deletePatientUsecase(patientDocument = deletedPatientDocument, uid = clincUid)
+        val name = _mainScreenData.value.patients[indexOfDeletedPatient].name
+        Log.i("deletePatient", "document: $deletedPatientDocument and index : $indexOfDeletedPatient and uid: $clincUid name: $name")
+        deletePatientUsecase.deletePatientUsecase(patientDocument = deletedPatientDocument, uid = clincUid, name = name)
     }
 }

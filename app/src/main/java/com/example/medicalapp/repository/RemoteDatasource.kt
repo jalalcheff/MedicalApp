@@ -13,6 +13,6 @@ interface RemoteDatasource {
     suspend fun addPatientInSpecificDate(uid: String, date: String, patientResource: PatientResource): Boolean
     suspend fun getNumberOfPatientsInSepcificDate(uid: String, date: String): Int
     suspend fun editAccountInformation(doctorName: String, fieldName: String, startExistenceTime: String, endExistenceTime: String, clincUid: String)
-    suspend fun deletePatient(patientDocument: String, uid: String)
+    suspend fun deletePatient(patientDocument: String, uid: String, name: String)
 
 }

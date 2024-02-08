@@ -6,5 +6,5 @@ interface ClincPatientsRepository {
     suspend fun getPatientsRepository(uid: String, date: String): List<PatientResource>
     suspend fun setPatientRepository(uid: String, date: String, patientResource: PatientResource): Boolean
     suspend fun getNumberOfPatientsRepository(uid: String, date: String): Int
-    suspend fun deletePatient(patientDocument: String, uid: String)
+    suspend fun deletePatient(patientDocument: String, uid: String, name: String)
 }
