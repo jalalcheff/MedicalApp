@@ -7,4 +7,8 @@ class RepositoryImp @Inject constructor(private val remoteDatasource: RemoteData
     override suspend fun login(email: String, password: String): String {
         return remoteDatasource.signIn(email, password)
     }
+
+    override suspend fun changePassword(newPassword: String) {
+        remoteDatasource.changePassword(newPassword)
+    }
 }

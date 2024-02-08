@@ -171,6 +171,10 @@ class RemoteDatasourceImp() : RemoteDatasource {
             }.await()
     }
 
+    override suspend fun changePassword(newPassword: String) {
+        FirebaseAuth.getInstance().currentUser?.updatePassword(newPassword)?.await()
+    }
+
     private suspend fun <T> tryToExecute(func: suspend () -> Task<AuthResult>): String {
         val response = func()
         // Log.d("TAG", "tryToExecute: ${response.code()}")
