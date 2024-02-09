@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GGC Mobile Application</title>
+  <title>احجزلي Mobile Application</title>
 </head>
 <body>
   <h1>GGC Mobile Application</h1>
 
   <h2>Description</h2>
-  <p>GGC is a mobile application designed to streamline the reservation process for clinics. Users can create reservations and the app sorts patients into a queue based on their reservation time. It provides reservation slots for the next seven days and allows users to manage their account information, including changing passwords.</p>
+  <p>احجزلي is a mobile application designed to streamline the reservation process for clinics. Users can create reservations and the app sorts patients into a queue based on their reservation time. It provides reservation slots for the next seven days and allows users to manage their account information, including changing passwords.</p>
 
   <h2>Features</h2>
   <ul>
