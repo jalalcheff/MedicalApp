@@ -28,29 +28,5 @@
     <li><strong>Architecture:</strong> Clean Architecture</li>
     <li><strong>Dependency Injection:</strong> (Specify the dependency injection library used, if any)</li>
   </ul>
-
-  <h2>Installation</h2>
-  <p>(Provide instructions for installing and setting up the project locally, if applicable)</p>
-
-  <h2>Usage</h2>
-  <p>(Explain how users can interact with the app and any specific commands or steps they need to follow)</p>
-
-  <h2>Configuration</h2>
-  <p>(List any configuration options or settings users need to be aware of)</p>
-
-  <h2>Contributing</h2>
-  <p>(Optional: Specify if you accept contributions from other developers and how they can contribute)</p>
-
-  <h2>License</h2>
-  <p>(Specify the license for your project, if applicable)</p>
-
-  <h2>Credits</h2>
-  <p>(Acknowledge any individuals or resources that contributed to the project)</p>
-
-  <h2>Contact</h2>
-  <p>(Provide contact information for users to reach out with questions or feedback, if desired)</p>
-
-  <h2>Support</h2>
-  <p>(Optional: Provide information about support channels for users encountering issues)</p>
 </body>
 </html>
