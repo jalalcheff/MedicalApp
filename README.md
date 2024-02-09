@@ -26,7 +26,7 @@
     <li><strong>Database:</strong> Firebase Firestore</li>
     <li><strong>Authentication:</strong> Firebase Authentication</li>
     <li><strong>Architecture:</strong> Clean Architecture</li>
-    <li><strong>Dependency Injection:</strong> (Specify the dependency injection library used, if any)</li>
+    <li><strong>Dependency Injection:</strong> Hilt dependency injection </li>
   </ul>
 </body>
 </html>
